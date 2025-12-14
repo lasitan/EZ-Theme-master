@@ -26,8 +26,8 @@ export const config  = {
         // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
         // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
         staticBaseUrl: [
-            'https://api.heixin.pp.ua/api/v1',
-            'https://api.heixin.pp.ua/api/v2'
+            'https://dev.heixin.pp.ua/api/v1',
+            'https://dev.heixin.pp.ua/api/v2'
         ],
 
         // 自动获取模式配置 (urlMode = 'auto'时使用)
@@ -48,7 +48,7 @@ export const config  = {
     API_MIDDLEWARE_ENABLED: false,
 
     // 中间件服务器URL (不含路径)
-    API_MIDDLEWARE_URL: 'https://api.heixin.pp.ua',
+    API_MIDDLEWARE_URL: 'https://dev.heixin.pp.ua',
 
     // 中间件路由前缀 (与中间件服务器配置保持一致)
     API_MIDDLEWARE_PATH: '/api/v1',
@@ -602,7 +602,7 @@ export const config  = {
     },
     // 盾牌（Cloudflare Turnstile）配置
     SHIELD_CONFIG: {
-        enabled: true,
+        enabled: false,
         // TODO: 替换为你的 Turnstile Site Key（公钥）
         turnstileSiteKey: '0x4AAAAAABo6zH1UaKZYQ8D_',
         tokenTtlMs: 3 * 60 * 60 * 1000,

@@ -96,7 +96,7 @@ input, button, textarea, select {
 }
 
 .hidden-xs {
-  @media (max-width: map.get($breakpoints, xs)) {
+  @media (max-width: map.get($breakpoints, sm) - 1) {
     display: none !important;
   }
 }
@@ -109,7 +109,7 @@ input, button, textarea, select {
 
 .visible-xs {
   display: none !important;
-  @media (max-width: map.get($breakpoints, xs)) {
+  @media (max-width: map.get($breakpoints, sm) - 1) {
     display: block !important;
   }
 }

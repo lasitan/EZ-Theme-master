@@ -48,9 +48,9 @@ body.dark-theme {
   --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-// 断点变量
+// 断点变量 (基于Bootstrap标准)
 $breakpoints: (
-  xs: 480px,
+  xs: 0px,
   sm: 576px,
   md: 768px,
   lg: 992px,
