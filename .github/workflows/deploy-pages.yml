@@ -1,4 +1,4 @@
-name: Deploy Vue app with GitHub Pages
+name: Deploy Vue app to Server
 
 on:
   # Push to main/master 触发部署
@@ -10,15 +10,13 @@ on:
   # 支持在 Actions 页面手动触发
   workflow_dispatch:
 
-# GITHUB_TOKEN 的权限：允许部署到 GitHub Pages
+# GITHUB_TOKEN 的权限：只允许读取内容
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # 避免并行多次部署，保证线上稳定
 concurrency:
-  group: "pages"
+  group: "deploy"
   cancel-in-progress: false
 
 jobs:
@@ -48,17 +46,11 @@ jobs:
         with:
           path: ./dist
 
-  # 部署到当前仓库的 GitHub Pages 和自有服务器
+  # 部署到自有服务器
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
 
       # 使用 SSH+scp 将 dist 内容同步到服务器 /www/wwwroot/heixin.pp.ua
       # 需要在仓库 Secrets 中配置：SSH_HOST, SSH_USER, SSH_PRIVATE_KEY
@@ -97,5 +89,3 @@ jobs:
 
           # 同步完成后再启动 nginx
           ssh "${SSH_USER}@${SSH_HOST}" "systemctl start nginx" || true
-
-

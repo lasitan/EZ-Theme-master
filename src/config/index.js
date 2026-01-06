@@ -26,8 +26,8 @@ export const config  = {
         // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
         // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
         staticBaseUrl: [
-            'https://dev.heixin.pp.ua/api/v1',
-            'https://dev.heixin.pp.ua/api/v2'
+            'https://apifu.992982.xyz/api/v1',
+            'https://apifu.992982.xyz/api/v2'
         ],
 
         // 自动获取模式配置 (urlMode = 'auto'时使用)
@@ -48,7 +48,7 @@ export const config  = {
     API_MIDDLEWARE_ENABLED: false,
 
     // 中间件服务器URL (不含路径)
-    API_MIDDLEWARE_URL: 'https://dev.heixin.pp.ua',
+    API_MIDDLEWARE_URL: 'apifu.992982.xyz',
 
     // 中间件路由前缀 (与中间件服务器配置保持一致)
     API_MIDDLEWARE_PATH: '/api/v1',
@@ -57,10 +57,10 @@ export const config  = {
 
     // ====================  网站基础配置  ====================
     SITE_CONFIG: {
-        siteName: '黑心云',
-        siteDescription: '黑心云',
+        siteName: '黑心云|府',
+        siteDescription: '黑心云|府',
         // copyright会自动使用当前年份
-        copyright: `© ${new Date().getFullYear()} 黑心云. All Rights Reserved.`,
+        copyright: `© ${new Date().getFullYear()} 黑心云|府. All Rights Reserved.`,
 
         // 是否显示标题中的网站Logo (true=显示, false=隐藏)
         showLogo: true,
@@ -187,7 +187,7 @@ export const config  = {
         recommendedBadgeText: '推荐购买',
 
         // 是否启用周期折扣计算显示 (true=启用, false=禁用)
-        enableDiscountCalculation: true, // 默认启用
+        enableDiscountCalculation: false, // 默认启用
 
         // 价格周期的显示顺序（从大到小）
         periodOrder: [
@@ -578,21 +578,12 @@ export const config  = {
         // 3. SVG图标应该使用 currentColor 作为颜色，以支持主题色 stroke="currentColor"
         // 4. 您可以从https://tabler.io/icons 获取图标的SVG代码
         customCards: [
-            // 自定义卡片示例
-            {
-                id: 'github',                  // 卡片唯一ID
-                title: 'GitHub',               // 卡片标题
-                description: '访问我们的GitHub', // 卡片描述
-                svgIcon: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>',
-                url: 'https://github.com',     // 点击卡片跳转的URL
-                openInNewTab: true             // 是否在新标签页打开
-            },
             {
                 id: 'telegram',
                 title: 'Telegram',
                 description: '加入我们的Telegram频道',
                 svgIcon: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-telegram" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>',
-                url: 'https://t.me/your_group',
+                url: 'https://t.me/heixinyun_chat',
                 openInNewTab: true
             }
             // 可以继续添加更多卡片...
@@ -602,9 +593,9 @@ export const config  = {
     },
     // 盾牌（Cloudflare Turnstile）配置
     SHIELD_CONFIG: {
-        enabled: false,
+        enabled: true,
         // TODO: 替换为你的 Turnstile Site Key（公钥）
-        turnstileSiteKey: '0x4AAAAAABo6zH1UaKZYQ8D_',
+        turnstileSiteKey: '0x4AAAAAACH320Zxv1U_IfyS',
         tokenTtlMs: 3 * 60 * 60 * 1000,
         
     },
