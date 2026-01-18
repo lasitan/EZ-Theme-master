@@ -2,6 +2,7 @@
 import request from './request';
 import store from '@/store';
 import { SITE_CONFIG } from '@/utils/baseConfig';
+import { getApiBaseUrl } from '@/utils/baseConfig';
 
 
 const setCookie = (name, value, days) => {
@@ -531,6 +532,17 @@ export const tokenLogin = (verifyToken, redirect) => {
       redirect: redirect || '' 
     }
   });
+};
+
+
+export const getGoogleLoginRedirectUrl = (redirect) => {
+  const base = String(getApiBaseUrl() || '').replace(/\/+$/, '');
+  const path = '/passport/auth/google/login';
+  const url = `${base}${path}`;
+  const qp = new URLSearchParams();
+  if (redirect) qp.set('redirect', redirect);
+  const qs = qp.toString();
+  return qs ? `${url}?${qs}` : url;
 };
 
 

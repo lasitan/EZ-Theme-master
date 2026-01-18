@@ -593,7 +593,7 @@ export const config  = {
     },
     // 盾牌（Cloudflare Turnstile）配置
     SHIELD_CONFIG: {
-        enabled: true,
+        enabled: false,
         // TODO: 替换为你的 Turnstile Site Key（公钥）
         turnstileSiteKey: '0x4AAAAAACH320Zxv1U_IfyS',
         tokenTtlMs: 3 * 60 * 60 * 1000,

@@ -6,6 +6,9 @@ import { SITE_CONFIG, DEFAULT_CONFIG, isBrowserRestricted, TRAFFICLOG_CONFIG, is
 import { hasValidShieldToken, hasShieldCookie, hasValidShieldCookie } from '@/utils/shieldToken';
 import { createLoginObfToken, isValidLoginObfToken, consumeLoginObfToken, LOGIN_OBF_TTL_MS } from '@/utils/loginObf';
 
+import { handleLoginSuccess } from '@/api/auth';
+import { handleRedirectPath } from '@/utils/redirectHandler';
+
 import i18n from '@/i18n';
 
 import pageCache from '@/utils/pageCache';
@@ -122,11 +125,49 @@ const routes = [
     },
     beforeEnter: (to, from, next) => {
       const token = to.params.obf ? String(to.params.obf) : '';
+      const verify = to.query && typeof to.query.verify !== 'undefined' ? String(to.query.verify || '') : '';
+      let authData = to.query && typeof to.query.auth_data !== 'undefined' ? String(to.query.auth_data || '') : '';
+      let authToken = to.query && typeof to.query.token !== 'undefined' ? String(to.query.token || '') : '';
+
+      if ((!authData || !authToken) && typeof window !== 'undefined') {
+        try {
+          const hash = window.location.hash ? String(window.location.hash) : '';
+          const qs = hash.includes('?') ? hash.split('?').slice(1).join('?') : '';
+          if (qs) {
+            const sp = new URLSearchParams(qs);
+            const qAuthData = sp.get('auth_data') || '';
+            const qToken = sp.get('token') || '';
+            if (!authData && qAuthData) authData = String(qAuthData);
+            if (!authToken && qToken) authToken = String(qToken);
+          }
+        } catch (e) {}
+      }
+
+      if (authData && authToken) {
+        try {
+          handleLoginSuccess({ token: authToken, auth_data: authData }, false);
+        } catch (e) {}
+
+        const redirectRaw = to.query && typeof to.query.redirect !== 'undefined' ? String(to.query.redirect || '') : '';
+        const targetPath = handleRedirectPath(redirectRaw || '/dashboard');
+        const { auth_data, token: _token, redirect, ...rest } = to.query || {};
+        next({ path: targetPath, query: rest, replace: true });
+        return;
+      }
+
       if (!token) {
+        if (verify || (authData && authToken)) {
+          next();
+          return;
+        }
         next({ name: 'BadGateway', replace: true });
         return;
       }
       if (!isValidLoginObfToken(token)) {
+        if (verify || (authData && authToken)) {
+          next();
+          return;
+        }
         next({ name: 'BadGateway', replace: true });
         return;
       }
@@ -601,6 +642,23 @@ let isFirstNavigation = true;
 
 
 router.beforeEach(async (to, from, next) => {
+  try {
+    const authData = to.query && typeof to.query.auth_data !== 'undefined' ? String(to.query.auth_data || '') : '';
+    const token = to.query && typeof to.query.token !== 'undefined' ? String(to.query.token || '') : '';
+    if (authData && token) {
+      handleLoginSuccess({ token, auth_data: authData }, false);
+
+      const redirectRaw = to.query && typeof to.query.redirect !== 'undefined' ? String(to.query.redirect || '') : '';
+      const currentPath = to.path ? String(to.path) : '';
+      const isLoginPath = currentPath === '/login' || currentPath.startsWith('/login/');
+      const targetPath = handleRedirectPath(redirectRaw || (!isLoginPath && currentPath ? currentPath : '/dashboard'));
+
+      const { auth_data, token: _token, redirect, ...rest } = to.query || {};
+      next({ path: targetPath, query: rest, replace: true });
+      return;
+    }
+  } catch (e) {}
+
   // 任何进入根路径的导航，统一规范为 /landing，再继续后续检查
   try {
     if (to.path === '/' && to.name !== 'Landing') {
