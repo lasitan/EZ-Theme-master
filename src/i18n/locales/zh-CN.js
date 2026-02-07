@@ -433,6 +433,7 @@ export default {
         giftCardSuccess: '礼品卡兑换成功',
         giftCardError: '礼品卡兑换失败',
         giftCardEmpty: '请输入礼品卡代码',
+        giftCardHistory: '礼品卡兑换记录',
         saveChanges: '保存更改',
         cancel: '取消',
         noSubscription: '暂无订阅链接',

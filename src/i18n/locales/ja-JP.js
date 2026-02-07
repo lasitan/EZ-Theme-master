@@ -428,6 +428,7 @@ export default {
     giftCardSuccess: 'ギフトカード交換成功',
     giftCardError: 'ギフトカード交換失敗',
     giftCardEmpty: 'ギフトカードコードを入力',
+    giftCardHistory: 'ギフトカード交換履歴',
     saveChanges: '変更保存',
     cancel: 'キャンセル',
     noSubscription: 'サブスクリプションリンクなし',

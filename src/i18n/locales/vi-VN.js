@@ -426,6 +426,7 @@ export default {
         giftCardSuccess: 'Đổi thẻ quà tặng thành công',
         giftCardError: 'Đổi thẻ quà tặng thất bại',
         giftCardEmpty: 'Vui lòng nhập mã thẻ quà tặng',
+        giftCardHistory: 'Lịch sử đổi thẻ quà tặng',
         saveChanges: 'Lưu thay đổi',
         cancel: 'Hủy bỏ',
         noSubscription: 'Chưa có liên kết đăng ký',

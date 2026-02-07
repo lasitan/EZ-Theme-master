@@ -428,6 +428,7 @@ export default {
     giftCardSuccess: 'Подарочная карта успешно обменяна',
     giftCardError: 'Ошибка обмена подарочной карты',
     giftCardEmpty: 'Введите код подарочной карты',
+    giftCardHistory: 'История обмена подарочных карт',
     saveChanges: 'Сохранить изменения',
     cancel: 'Отмена',
     noSubscription: 'Нет ссылки подписки',

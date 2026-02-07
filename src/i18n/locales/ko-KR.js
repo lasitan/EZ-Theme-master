@@ -429,6 +429,7 @@ export default {
     giftCardSuccess: '기프트 카드 교환 성공',
     giftCardError: '기프트 카드 교환 실패',
     giftCardEmpty: '기프트 카드 코드를 입력하세요',
+    giftCardHistory: '기프트 카드 교환 기록',
     saveChanges: '변경 저장',
     cancel: '취소',
     noSubscription: '구독 링크 없음',

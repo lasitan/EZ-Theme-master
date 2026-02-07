@@ -432,6 +432,7 @@ export default {
         giftCardSuccess: 'Gift card redeemed successfully',
         giftCardError: 'Gift card redemption failed',
         giftCardEmpty: 'Please enter gift card code',
+        giftCardHistory: 'Gift Card History',
         saveChanges: 'Save Changes',
         cancel: 'Cancel',
         noSubscription: 'No subscription link available',

@@ -424,6 +424,7 @@ export default {
     giftCardSuccess: '禮品卡兌換成功',
     giftCardError: '禮品卡兌換失敗',
     giftCardEmpty: '請輸入禮品卡代碼',
+    giftCardHistory: '禮品卡兌換記錄',
     saveChanges: '儲存變更',
     cancel: '取消',
     noSubscription: '暫無訂閱連結',

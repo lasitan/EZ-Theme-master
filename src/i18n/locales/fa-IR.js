@@ -428,6 +428,7 @@ export default {
     giftCardSuccess: 'تبادل کارت هدیه موفق',
     giftCardError: 'تبادل کارت هدیه شکست خورد',
     giftCardEmpty: 'کد کارت هدیه را وارد کنید',
+    giftCardHistory: 'سوابق تبادل کارت هدیه',
     saveChanges: 'ذخیره تغییرات',
     cancel: 'لغو',
     noSubscription: 'لینک اشتراکی موجود نیست',
