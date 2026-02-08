@@ -1,5 +1,8 @@
 ﻿<template>
   <div>
+    <div v-if="apiPendingCount > 0" class="api-blocking-overlay">
+      <img class="api-blocking-overlay__gif" src="/images/loading.gif" alt="loading" />
+    </div>
     <!-- 静态布局容器，包含不需要过渡效果的菜单和按钮 -->
     <div class="static-layout" v-if="$route.meta.requiresAuth">
       <!-- 网站名称 -->
@@ -82,6 +85,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { SITE_CONFIG, PROFILE_CONFIG, CUSTOMER_SERVICE_CONFIG } from '@/utils/baseConfig';
 import { checkAuthAndReloadMessages } from '@/utils/authUtils';
 import { checkUserLoginStatus } from '@/api/auth';
+import { getPendingApiCount } from '@/api/request';
 import { handleRedirectPath } from '@/utils/redirectHandler';
 import Toast from '@/components/common/Toast.vue';
 import IconDefinitions from '@/components/icons/IconDefinitions.vue';
@@ -98,6 +102,7 @@ import { IconGift } from '@tabler/icons-vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import pageCache from '@/utils/pageCache';
+import preloadManager from '@/utils/preloadManager';
 
 NProgress.configure({ 
   showSpinner: true,   
@@ -131,6 +136,12 @@ export default {
     const cachedRoutes = computed(() => pageCache.getCachedRoutes());
     
     const customerServiceConfig = computed(() => CUSTOMER_SERVICE_CONFIG);
+
+    const apiPendingCount = ref(getPendingApiCount());
+    const handleApiPendingChange = (e) => {
+      const next = e && e.detail && typeof e.detail.count === 'number' ? e.detail.count : 0;
+      apiPendingCount.value = next;
+    };
     
     router.beforeEach((to, from, next) => {
       if (to.meta.keepAlive && to.name) {
@@ -169,6 +180,15 @@ export default {
           router.replace(targetPath);
         }
       }
+    };
+
+    const handleBeforeUnload = (e) => {
+      if (preloadManager.isPreloading()) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+      return undefined;
     };
     
     watch(() => route.fullPath, () => {
@@ -223,7 +243,8 @@ export default {
     
     onMounted(() => {
       window.addEventListener('languageChanged', onLanguageChanged);
-      
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      window.addEventListener('ez:api-pending-change', handleApiPendingChange);
       applyTheme(store.getters.currentTheme);
       
       checkAuthAndReloadMessages();
@@ -246,6 +267,8 @@ export default {
     
     onUnmounted(() => {
       window.removeEventListener('languageChanged', onLanguageChanged);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('ez:api-pending-change', handleApiPendingChange);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     });
     
@@ -255,7 +278,8 @@ export default {
       siteConfig,
       PROFILE_CONFIG,
       cachedRoutes,
-      customerServiceConfig
+      customerServiceConfig,
+      apiPendingCount
     };
   }
 };
@@ -480,6 +504,28 @@ html {
     display: none !important;
     content: none !important;
   }
+}
+
+
+.api-blocking-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.api-blocking-overlay__gif {
+  width: 120px;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 

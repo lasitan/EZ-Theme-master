@@ -4,6 +4,28 @@ import { API_BASE_URL, getApiBaseUrl, isXiaoV2board, isXboard, CUSTOM_HEADERS_CO
 import { mapApiPath } from './utils/pathMapper';
 // removed: getAvailableApiUrl (API availability check removed)
 
+let _pendingCount = 0;
+
+const _emitPendingCount = () => {
+  try {
+    if (typeof window !== 'undefined' && window && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('ez:api-pending-change', { detail: { count: _pendingCount } }));
+    }
+  } catch (_) {}
+};
+
+const _incPending = () => {
+  _pendingCount += 1;
+  _emitPendingCount();
+};
+
+const _decPending = () => {
+  _pendingCount = Math.max(0, _pendingCount - 1);
+  _emitPendingCount();
+};
+
+export const getPendingApiCount = () => _pendingCount;
+
 const request = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000, 
@@ -14,6 +36,7 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
+      _incPending();
       config.baseURL = getApiBaseUrl();
     
     if (window.EZ_CONFIG && window.EZ_CONFIG.API_MIDDLEWARE_ENABLED) {
@@ -110,6 +133,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
+    _decPending();
     console.error('请求拦截器错误:', error);
     return Promise.reject(new Error('请求配置错误'));
   }
@@ -117,6 +141,7 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   response => {
+    _decPending();
     try {
       const res = response.data;
       
@@ -141,6 +166,7 @@ request.interceptors.response.use(
     }
   },
   error => {
+    _decPending();
     console.error('请求错误:', error);
     
     if (error.response && error.response.data && error.response.data.message) {

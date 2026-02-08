@@ -424,6 +424,7 @@ export default {
     giftCard: 'Обмен подарочной карты',
     giftCardTitle: 'Обмен подарочной карты',
     giftCardPlaceholder: 'Введите код подарочной карты',
+    giftCardCheck: 'Проверить',
     giftCardSubmit: 'Обменять',
     giftCardSuccess: 'Подарочная карта успешно обменяна',
     giftCardError: 'Ошибка обмена подарочной карты',

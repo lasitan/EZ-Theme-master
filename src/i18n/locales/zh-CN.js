@@ -429,6 +429,7 @@ export default {
         giftCard: '礼品卡兑一兑',
         giftCardTitle: '礼品卡兑一兑',
         giftCardPlaceholder: '输入礼品卡代码',
+        giftCardCheck: '查询',
         giftCardSubmit: '兑换',
         giftCardSuccess: '礼品卡兑换成功',
         giftCardError: '礼品卡兑换失败',

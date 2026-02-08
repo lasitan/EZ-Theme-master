@@ -424,6 +424,7 @@ export default {
     giftCard: 'کارت هدیه',
     giftCardTitle: 'تبادل کارت هدیه',
     giftCardPlaceholder: 'کد کارت هدیه را وارد کنید',
+    giftCardCheck: 'بررسی',
     giftCardSubmit: 'تبادل',
     giftCardSuccess: 'تبادل کارت هدیه موفق',
     giftCardError: 'تبادل کارت هدیه شکست خورد',

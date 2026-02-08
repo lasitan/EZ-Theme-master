@@ -428,6 +428,7 @@ export default {
         giftCard: 'Gift Card Redemption',
         giftCardTitle: 'Gift Card Redemption',
         giftCardPlaceholder: 'Enter gift card code',
+        giftCardCheck: 'Check',
         giftCardSubmit: 'Redeem',
         giftCardSuccess: 'Gift card redeemed successfully',
         giftCardError: 'Gift card redemption failed',

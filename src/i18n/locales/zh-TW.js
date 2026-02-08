@@ -420,6 +420,7 @@ export default {
     giftCard: '禮品卡兌換',
     giftCardTitle: '禮品卡兌換',
     giftCardPlaceholder: '輸入禮品卡代碼',
+    giftCardCheck: '查詢',
     giftCardSubmit: '兌換',
     giftCardSuccess: '禮品卡兌換成功',
     giftCardError: '禮品卡兌換失敗',
