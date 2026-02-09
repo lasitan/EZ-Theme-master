@@ -1312,9 +1312,9 @@ fetchTickets();
 
   animation: slideInRight 0.3s ease;
 
-  backdrop-filter: blur(5px);
+  backdrop-filter: none;
 
-  -webkit-backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: none;
 
   
 
@@ -1350,9 +1350,9 @@ fetchTickets();
 
   margin-top: 70px; 
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: none;
 
 
 
@@ -1872,9 +1872,9 @@ fetchTickets();
 
   z-index: 5;
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: none;
 
 
 
@@ -2026,9 +2026,9 @@ fetchTickets();
 
   z-index: 5;
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: none;
 
 }
 
@@ -2048,7 +2048,9 @@ fetchTickets();
 
   background-color: rgba(0, 0, 0, 0.6);
 
-  backdrop-filter: blur(6px);
+  backdrop-filter: none;
+
+  -webkit-backdrop-filter: none;
 
   display: flex;
 

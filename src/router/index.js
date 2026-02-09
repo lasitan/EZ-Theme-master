@@ -488,6 +488,8 @@ const routes = [
 
           requiresAuth: true,
 
+          disableApiOverlay: true,
+
           activeNav: 'More' 
         }
 
@@ -506,6 +508,8 @@ const routes = [
           titleKey: 'tickets.title',
 
           requiresAuth: true,
+
+          disableApiOverlay: true,
 
           activeNav: 'More' 
         }

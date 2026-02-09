@@ -1279,9 +1279,9 @@ onUnmounted(() => {
 
     background-color: rgba(var(--theme-color-rgb), 0.85);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: none;
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: none;
 
     border: 1px solid rgba(var(--theme-color-rgb), 0.3);
 
@@ -1845,9 +1845,9 @@ onUnmounted(() => {
 
       bottom: 0;
 
-      backdrop-filter: blur(10px);
+      backdrop-filter: none;
 
-      -webkit-backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: none;
 
       z-index: -1;
 
@@ -2111,9 +2111,9 @@ onUnmounted(() => {
 
     box-shadow: 0 8px 20px rgba(var(--theme-color-rgb), 0.25);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: none;
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: none;
 
     border: 1px solid rgba(var(--theme-color-rgb), 0.3);
 
@@ -2327,9 +2327,9 @@ onUnmounted(() => {
 
   z-index: 1000;
 
-  backdrop-filter: blur(0px);
+  backdrop-filter: none;
 
-  -webkit-backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: none;
 
   transition: all 0.3s ease;
 
@@ -2341,9 +2341,9 @@ onUnmounted(() => {
 
     background-color: rgba(0, 0, 0, 0.5); 
 
-    backdrop-filter: blur(5px);
+    backdrop-filter: none;
 
-    -webkit-backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: none;
 
     pointer-events: auto; 
 

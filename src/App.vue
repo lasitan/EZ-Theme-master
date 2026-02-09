@@ -1,6 +1,6 @@
 ﻿<template>
   <div>
-    <div v-if="apiPendingCount > 0" class="api-blocking-overlay">
+    <div v-if="shouldShowApiOverlay" class="api-blocking-overlay">
       <img class="api-blocking-overlay__gif" src="/images/loading.gif" alt="loading" />
     </div>
     <!-- 静态布局容器，包含不需要过渡效果的菜单和按钮 -->
@@ -138,6 +138,12 @@ export default {
     const customerServiceConfig = computed(() => CUSTOMER_SERVICE_CONFIG);
 
     const apiPendingCount = ref(getPendingApiCount());
+    const shouldShowApiOverlay = computed(() => {
+      try {
+        if (route && route.meta && route.meta.disableApiOverlay) return false;
+      } catch (e) {}
+      return apiPendingCount.value > 0;
+    });
     const handleApiPendingChange = (e) => {
       const next = e && e.detail && typeof e.detail.count === 'number' ? e.detail.count : 0;
       apiPendingCount.value = next;
