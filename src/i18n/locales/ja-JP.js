@@ -424,6 +424,7 @@ export default {
     giftCard: 'ギフトカード交換',
     giftCardTitle: 'ギフトカード交換',
     giftCardPlaceholder: 'ギフトカードコードを入力',
+    giftCardCheck: '確認',
     giftCardSubmit: '交換',
     giftCardSuccess: 'ギフトカード交換成功',
     giftCardError: 'ギフトカード交換失敗',

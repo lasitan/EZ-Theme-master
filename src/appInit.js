@@ -34,6 +34,15 @@ const initApp = async () => {
 
     app.mount('#app');
 
+    try {
+      const el = document.getElementById('initial-preloader');
+      if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+      document.documentElement.classList.remove('preloader-active');
+      document.body.classList.remove('preloader-active');
+    } catch (_) {}
+
     store.dispatch('initUserInfo');
   } catch (error) {
     console.error('应用初始化失败:', error);

@@ -559,6 +559,8 @@ export default {
 
         isLoading.value = false;
 
+        preloadManager.setPreloading(false);
+
         return;
 
       }
@@ -723,6 +725,8 @@ export default {
 
 
     const preloadResources = () => {
+
+      preloadManager.setPreloading(true);
 
       const schedulePreload = (callback, timeout) => {
 

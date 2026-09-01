@@ -425,6 +425,7 @@ export default {
     giftCard: '기프트 카드 교환',
     giftCardTitle: '기프트 카드 교환',
     giftCardPlaceholder: '기프트 카드 코드를 입력하세요',
+    giftCardCheck: '확인',
     giftCardSubmit: '교환',
     giftCardSuccess: '기프트 카드 교환 성공',
     giftCardError: '기프트 카드 교환 실패',

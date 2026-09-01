@@ -488,6 +488,8 @@ const routes = [
 
           requiresAuth: true,
 
+          disableApiOverlay: true,
+
           activeNav: 'More' 
         }
 
@@ -506,6 +508,8 @@ const routes = [
           titleKey: 'tickets.title',
 
           requiresAuth: true,
+
+          disableApiOverlay: true,
 
           activeNav: 'More' 
         }
@@ -629,7 +633,7 @@ router.beforeEach(async (to, from, next) => {
   // 任何进入根路径的导航，统一规范为 /landing，再继续后续检查
   try {
     if (to.path === '/' && to.name !== 'Landing') {
-      next('/landing');
+      next({ path: '/landing', query: to.query || {}, replace: true });
       return;
     }
   } catch (e) {}

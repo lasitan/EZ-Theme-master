@@ -422,6 +422,7 @@ export default {
         giftCard: 'Đổi thẻ quà tặng',
         giftCardTitle: 'Đổi thẻ quà tặng',
         giftCardPlaceholder: 'Nhập mã thẻ quà tặng',
+        giftCardCheck: 'Kiểm tra',
         giftCardSubmit: 'Đổi',
         giftCardSuccess: 'Đổi thẻ quà tặng thành công',
         giftCardError: 'Đổi thẻ quà tặng thất bại',

@@ -2,6 +2,28 @@
 import axios from 'axios';
 import { API_BASE_URL, CUSTOM_HEADERS_CONFIG } from '@/utils/baseConfig';
 
+let _pendingCount = 0;
+
+const _emitPendingCount = () => {
+  try {
+    if (typeof window !== 'undefined' && window && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('ez:api-pending-change', { detail: { count: _pendingCount } }));
+    }
+  } catch (_) {}
+};
+
+const _incPending = () => {
+  _pendingCount += 1;
+  _emitPendingCount();
+};
+
+const _decPending = () => {
+  _pendingCount = Math.max(0, _pendingCount - 1);
+  _emitPendingCount();
+};
+
+export const getPendingApiCount = () => _pendingCount;
+
 const request = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000, 
@@ -12,6 +34,8 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
+    _incPending();
+
     if (config.method === 'post' && config.data) {
       const formData = new URLSearchParams();
       for (const key in config.data) {
@@ -95,6 +119,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
+    _decPending();
     console.error('请求拦截器错误:', error);
     return Promise.reject(new Error('请求配置错误'));
   }
@@ -102,6 +127,7 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   response => {
+    _decPending();
     try {
       const res = response.data;
       
@@ -126,6 +152,7 @@ request.interceptors.response.use(
     }
   },
   error => {
+    _decPending();
     console.error('请求错误:', error);
     
     if (error.response && error.response.data && error.response.data.message) {

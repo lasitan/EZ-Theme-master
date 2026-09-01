@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="preloader-active">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -55,6 +55,25 @@
         html.preloader-active, body.preloader-active {
             overflow: hidden !important;
         }
+
+        #initial-preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0f14;
+        }
+
+        #initial-preloader .initial-loader-gif {
+            width: 120px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
     </style>
     <!-- 版本号样式 -->
     <style>
@@ -71,7 +90,8 @@
     </style>
 
 </head>
-<body>
+<body class="preloader-active">
+<div id="initial-preloader"><img class="initial-loader-gif" src="/images/loading.gif" alt="loading" /></div>
 <div id="app"></div>
 <!-- built files will be auto injected -->
 <!-- 隐蔽版本号 若不想显示版本号 请注释下方 div 标签-->
