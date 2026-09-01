@@ -159,15 +159,6 @@
                 <span class="info-label">{{ $t('dashboard.nextResetTime') }}</span>
                 <span class="info-value">{{ userPlan.resetDay }} {{ $t('dashboard.days') }}</span>
               </div>
-              <!-- 添加在线设备信息，仅当面板类型为 Xiao-board 时显示 -->
-              <div class="info-item" v-if="showDeviceLimit">
-                <span class="info-label">{{ $t('dashboard.deviceLimit') }}</span>
-                <span class="info-value">
-                  {{
-                    userPlan.deviceLimit === null ? `${userPlan.aliveIp} / ${$t('dashboard.unlimited')}` : `${userPlan.aliveIp} / ${userPlan.deviceLimit}`
-                  }}
-                </span>
-              </div>
             </div>
             <div class="subscription-actions">
               <button v-if="showImportSubscription" class="btn-outline" :class="{
@@ -544,19 +535,14 @@
           </div>
 
           <div class="stats-card"
-               :class="{'card-animate': !loading.userStats, 'balance-card': true, 'clickable': isXiaoPanel}"
-               style="animation-delay: 0.7s"
-               @click="isXiaoPanel ? navigateToDeposit() : null"
-               :style="isXiaoPanel ? { cursor: 'pointer' } : {}">
+               :class="{'card-animate': !loading.userStats, 'balance-card': true}"
+               style="animation-delay: 0.7s">
             <div class="stats-icon">
               <IconWallet :size="32"/>
             </div>
             <div class="stats-info">
               <div class="stats-value">{{ userStats.accountBalance }}</div>
               <div class="stats-label">{{ $t('dashboard.accountBalance') }}</div>
-            </div>
-            <div v-if="isXiaoPanel" class="chevron-icon">
-              <IconChevronRight :size="20"/>
             </div>
           </div>
 
@@ -707,7 +693,7 @@ import {
 } from 'vue';
 import {useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
-import {CLIENT_CONFIG, DASHBOARD_CONFIG, isXiaoV2board, SITE_CONFIG} from '@/utils/baseConfig';
+import {CLIENT_CONFIG, DASHBOARD_CONFIG, SITE_CONFIG} from '@/utils/baseConfig';
 import {
   IconAlertTriangle,
   IconBox,
@@ -1850,16 +1836,6 @@ export default {
       router.push(`/order-confirm?id=${userPlanId.value}`);
     };
 
-    const isXiaoPanel = isXiaoV2board();
-
-    const navigateToDeposit = () => {
-      router.push('/wallet/deposit');
-    };
-
-    const showDeviceLimit = computed(() => {
-      return isXiaoV2board() && DASHBOARD_CONFIG.showOnlineDevicesLimit;
-    });
-
     const timers = {};
     const listeners = {};
 
@@ -2013,9 +1989,6 @@ export default {
       processedNoticeContent,
       showRenewPlanButton,
       renewPlan,
-      isXiaoPanel,
-      navigateToDeposit,
-      showDeviceLimit,
       needRefreshData,
       trafficPercentage,
       waterAnimationState,

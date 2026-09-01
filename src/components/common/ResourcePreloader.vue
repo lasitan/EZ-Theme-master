@@ -479,16 +479,6 @@ export default {
 
         ],
 
-        '/wallet/deposit': [
-
-          { path: 'Dashboard', name: 'Dashboard', priority: 1, component: () => import('@/views/dashboard/Dashboard.vue') },
-
-          { path: 'Shop', name: 'Shop', priority: 2, component: () => import('@/views/shop/Shop.vue') },
-
-          { path: 'Profile', name: 'Profile', priority: 3, component: () => import('@/views/profile/UserProfile.vue') }
-
-        ],
-
         '/payment': [
 
           { path: 'OrderConfirm', name: 'OrderConfirm', priority: 1, component: () => import('@/views/shop/OrderConfirm.vue') },

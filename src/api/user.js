@@ -59,15 +59,6 @@ export function getIpLocationInfo() {
   })();
 }
 
-export function redeemGiftCard(giftcard) {
-  return request({
-    url: '/user/redeemgiftcard',
-    method: 'post',
-    data: { giftcard }
-  });
-}
-
-
 export function changePassword(data) {
   return request({
     url: '/user/changePassword',

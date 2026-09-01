@@ -44,14 +44,6 @@
 
         </div>
 
-        <div class="menu-item" v-if="isXiaoV2board" @click="navigateTo('/wallet/deposit')">
-
-          <IconWallet class="menu-icon" />
-
-          <span>{{ $t('common.myWallet') }}</span>
-
-        </div>
-
         <div class="menu-item" @click="navigateTo('/profile?openPasswordModal=true')">
 
           <IconLock class="menu-icon" />
@@ -90,13 +82,10 @@ import { useI18n } from 'vue-i18n';
 
 import { useToast } from '@/composables/useToast';
 
-import { isXiaoV2board } from '@/utils/baseConfig';
 import { navigateToLogin } from '@/utils/loginObf';
 import IconUser from '@/components/icons/IconUser.vue';
 
 import IconLogout from '@/components/icons/IconLogout.vue';
-
-import IconWallet from '@/components/icons/IconWallet.vue';
 
 import IconLock from '@/components/icons/IconLock.vue';
 
@@ -111,8 +100,6 @@ export default {
     IconUser,
 
     IconLogout,
-
-    IconWallet,
 
     IconLock
 
@@ -237,9 +224,7 @@ export default {
 
       logout,
 
-      avatarContainer,
-
-      isXiaoV2board: isXiaoV2board()
+      avatarContainer
 
     };
 

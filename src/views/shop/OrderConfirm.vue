@@ -475,7 +475,7 @@ import { getCommConfig, fetchPlanById, verifyCoupon as checkCoupon, submitOrder 
 
 import { getUserInfo } from '@/api/dashboard';
 
-import { isXboard, ORDER_CONFIG } from '@/utils/baseConfig';
+import { ORDER_CONFIG } from '@/utils/baseConfig';
 
 import CommonDialog from '@/components/popup/CommonDialog.vue';
 
@@ -885,13 +885,8 @@ export default {
 
             
 
-            if (isXboard()) {
-
-              const calculatedDiscountAmount = Math.round(originalPrice.value * (discountPercent.value / 100));
-
-              couponInfo.value.calculatedDiscountAmount = calculatedDiscountAmount;
-
-            }
+            const calculatedDiscountAmount = Math.round(originalPrice.value * (discountPercent.value / 100));
+            couponInfo.value.calculatedDiscountAmount = calculatedDiscountAmount;
 
             
 

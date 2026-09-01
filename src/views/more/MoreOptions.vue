@@ -208,34 +208,6 @@
 
         
 
-        <!-- 充值选项，仅Xiao-V2board面板显示 -->
-
-        <div v-if="isXiaoPanel" class="stats-card" @click="$router.push('/wallet/deposit')">
-
-          <div class="stats-icon">
-
-            <IconWallet :size="32" />
-
-          </div>
-
-          <div class="stats-info">
-
-            <div class="stats-value">{{ $t('wallet.deposit.title') }}</div>
-
-            <div class="stats-label">{{ $t('wallet.balance.description') }}</div>
-
-          </div>
-
-          <div class="chevron-icon">
-
-            <IconChevronRight :size="20" />
-
-          </div>
-
-        </div>
-
-        
-
         <div class="stats-card" @click="$router.push('/profile')">
 
           <div class="stats-icon">
@@ -356,9 +328,7 @@ import {
 
   IconMessages,
 
-  IconChartBar,
-
-  IconWallet
+  IconChartBar
 
 } from '@tabler/icons-vue';
 
@@ -372,7 +342,7 @@ import DomainAuthAlert from '@/components/common/DomainAuthAlert.vue';
 
 
 
-import { TRAFFICLOG_CONFIG, isXiaoV2board, MORE_PAGE_CONFIG } from '@/utils/baseConfig';
+import { TRAFFICLOG_CONFIG, MORE_PAGE_CONFIG } from '@/utils/baseConfig';
 
 import { getGiftCardHistory } from '@/api/giftCard';
 
@@ -391,8 +361,6 @@ const isSmallScreen = ref(false);
 const showTrafficLog = ref(false);
 
 const giftCardHistory = ref([]);
-
-const isXiaoPanel = isXiaoV2board();
 
 
 

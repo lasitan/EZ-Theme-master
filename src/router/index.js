@@ -2,7 +2,7 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-import { SITE_CONFIG, DEFAULT_CONFIG, isBrowserRestricted, TRAFFICLOG_CONFIG, isXiaoV2board, AUTH_LAYOUT_CONFIG, SHIELD_CONFIG } from '@/utils/baseConfig';
+import { SITE_CONFIG, DEFAULT_CONFIG, isBrowserRestricted, TRAFFICLOG_CONFIG, AUTH_LAYOUT_CONFIG, SHIELD_CONFIG } from '@/utils/baseConfig';
 import { hasValidShieldToken, hasShieldCookie, hasValidShieldCookie } from '@/utils/shieldToken';
 import { createLoginObfToken, isValidLoginObfToken, consumeLoginObfToken, LOGIN_OBF_TTL_MS } from '@/utils/loginObf';
 
@@ -551,39 +551,6 @@ const routes = [
         beforeEnter: (to, from, next) => {
 
           if (!TRAFFICLOG_CONFIG.enableTrafficLog) {
-
-            next('/dashboard');
-
-          } else {
-
-            next();
-
-          }
-
-        }
-
-      },
-
-      {
-
-        path: 'wallet/deposit',
-
-        name: 'Deposit',
-
-        component: () => import('@/views/wallet/WalletDeposit.vue'),
-
-        meta: {
-
-          titleKey: 'wallet.deposit.title',
-
-          requiresAuth: true,
-
-          activeNav: 'More' 
-        },
-
-        beforeEnter: (to, from, next) => {
-
-          if (!isXiaoV2board()) {
 
             next('/dashboard');
 

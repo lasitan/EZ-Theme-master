@@ -36,87 +36,9 @@ const isObject = item => {
 };
 
 
-// 获取面板类型的常量
-// 可选值: 'V2board', 'Xiao-V2board' 或 'Xboard'
-export const PANEL_TYPE = getConfig('PANEL_TYPE', 'V2board');
-
-// 判断是否为Xiao-V2board面板
-export const isXiaoV2board = () => {
-    return PANEL_TYPE === 'Xiao-V2board';
-};
-
-// 判断是否为Xboard面板
-export const isXboard = () => {
-    return PANEL_TYPE === 'Xboard';
-};
-
-// 获取API基础URL的函数
-export const getApiBaseUrl = () => {
-    // 完全依赖config.js中的配置
-    if (typeof window !== 'undefined' && window.EZ_CONFIG) {
-        // 首先检查是否启用中间件代理
-        if (window.EZ_CONFIG.API_MIDDLEWARE_ENABLED === true && window.EZ_CONFIG.API_MIDDLEWARE_URL) {
-            // 使用中间件URL和路径
-            const middlewareUrl = window.EZ_CONFIG.API_MIDDLEWARE_URL.trim();
-            const middlewarePath = window.EZ_CONFIG.API_MIDDLEWARE_PATH;
-
-            // 确保URL末尾没有斜杠，且路径开头有斜杠，防止出现重复或缺少斜杠
-            const formattedUrl = middlewareUrl.endsWith('/') ? middlewareUrl.slice(0, -1) : middlewareUrl;
-            const formattedPath = middlewarePath.startsWith('/') ? middlewarePath : `/${middlewarePath}`;
-
-            return formattedUrl + formattedPath;
-        }
-
-        // 然后检查是否存在API_CONFIG
-        if (window.EZ_CONFIG.API_CONFIG) {
-            const apiConfig = window.EZ_CONFIG.API_CONFIG;
-
-            // 静态URL模式（不再进行可用性检测，直接取第一个或唯一值）
-            if (apiConfig.urlMode === 'static' && apiConfig.staticBaseUrl) {
-                if (Array.isArray(apiConfig.staticBaseUrl)) {
-                    return apiConfig.staticBaseUrl.length > 0 ? apiConfig.staticBaseUrl[0] : '';
-                } else if (typeof apiConfig.staticBaseUrl === 'string') {
-                    return apiConfig.staticBaseUrl;
-                }
-                return '';
-            }
-
-            // 自动获取模式
-            if (apiConfig.urlMode === 'auto' && apiConfig.autoConfig) {
-                try {
-                    const currentUrl = new URL(window.location.href);
-                    let apiBaseUrl = '';
-
-                    // 协议
-                    const protocol = apiConfig.autoConfig.useSameProtocol
-                        ? currentUrl.protocol
-                        : 'https:';
-
-                    // 域名
-                    apiBaseUrl = `${protocol}//${currentUrl.host}`;
-
-                    // API路径
-                    if (apiConfig.autoConfig.appendApiPath && apiConfig.autoConfig.apiPath) {
-                        apiBaseUrl += apiConfig.autoConfig.apiPath;
-                    }
-
-                    return apiBaseUrl;
-                } catch (error) {
-                    console.error('自动获取API URL失败:', error);
-                    // 仅在自动模式失败时回退到静态URL
-                    if (apiConfig.staticBaseUrl) {
-                        return apiConfig.staticBaseUrl;
-                    }
-                }
-            }
-        }
-    }
-
-    return '';
-};
-
-// 直接导出API基础URL
-export const API_BASE_URL = getApiBaseUrl();
+// Xboard 固定 API 路径
+export const API_BASE_URL = '/api/v1';
+export const getApiBaseUrl = () => API_BASE_URL;
 
 /**
  * 安全配置选项
@@ -478,9 +400,6 @@ const DEFAULT_DASHBOARD_CONFIG = {
     // 即将过期的天数阈值 (1-30)，当剩余天数小于等于此值时触发即将过期警告
     expiringThreshold: 7,
 
-    // 是否显示在线设备数量限制 (true=显示, false=隐藏，仅Xiao-V2board支持)
-    showOnlineDevicesLimit: true,
-    
     // 是否显示导入订阅
     showImportSubscription: true,
 
@@ -711,22 +630,6 @@ export const isBrowserRestricted = () => {
 
     return false;
 };
-
-/**
- * 充值相关配置
- */
-const DEFAULT_WALLET_CONFIG = {
-    // 预设充值金额选项（单位：元）
-    presetAmounts: [6, 30, 68, 128, 256, 328, 648, 1280],
-
-    // 默认选中的充值金额（如果设为null则不预选金额）
-    defaultSelectedAmount: null,
-
-    // 最小充值金额（单位：元）
-    minimumDepositAmount: 1
-};
-
-export const WALLET_CONFIG = mergeDeep(DEFAULT_WALLET_CONFIG, getConfig('WALLET_CONFIG'));
 
 /**
  * 邀请页面配置

@@ -1,8 +1,6 @@
 ﻿
 import axios from 'axios';
-import { API_BASE_URL, getApiBaseUrl, isXiaoV2board, isXboard, CUSTOM_HEADERS_CONFIG } from '@/utils/baseConfig';
-import { mapApiPath } from './utils/pathMapper';
-// removed: getAvailableApiUrl (API availability check removed)
+import { API_BASE_URL, CUSTOM_HEADERS_CONFIG } from '@/utils/baseConfig';
 
 const request = axios.create({
   baseURL: API_BASE_URL,
@@ -14,20 +12,7 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
-      config.baseURL = getApiBaseUrl();
-    
-    if (window.EZ_CONFIG && window.EZ_CONFIG.API_MIDDLEWARE_ENABLED) {
-      const originalUrl = config.url;
-      
-      config.url = mapApiPath(config.url);
-      
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`API路径映射: ${originalUrl} -> ${config.url}`);
-      }
-    } 
-    // removed: dynamic selection from API_BASE_URLS via availability checker
-    
-    if ((isXiaoV2board() || isXboard()) && config.method === 'post' && config.data) {
+    if (config.method === 'post' && config.data) {
       const formData = new URLSearchParams();
       for (const key in config.data) {
         if (Object.prototype.hasOwnProperty.call(config.data, key)) {

@@ -5,56 +5,6 @@
  */
 
 export const config  = {
-    // 面板类型配置 - 请选择您使用的面板类型
-    PANEL_TYPE: 'Xboard', // 可选值: 'V2board', 'Xiao-V2board' 或 'Xboard'
-    // 说明:
-    // 1. V2board: 标准V2board面板，使用默认请求格式
-    // 2. Xiao-V2board: Xiao修改版面板，使用特殊格式的请求参数
-    // 3. Xboard: Xboard面板
-
-    // =======================================================
-
-    // API配置
-    // 可使用以下选项来配置API基础URL:
-    // 1. 静态URL: 直接指定API基础URL 末尾要加 /api/v1 !!!!!!!!!!!!!!! 除非你自己改过路由要不然别不加
-    // 2. 自动获取: 从当前域名自动生成API基础URL
-    API_CONFIG: {
-        // API URL获取方式: 'static'=使用静态URL, 'auto'=自动从当前域名获取
-        urlMode: 'static',
-
-        // 静态URL模式下的基础URL (urlMode = 'static'时使用)
-        // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
-        // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
-        staticBaseUrl: [
-            'https://apifu.992982.xyz/api/v1',
-            'https://apifu.992982.xyz/api/v2'
-        ],
-
-        // 自动获取模式配置 (urlMode = 'auto'时使用)
-        autoConfig: {
-            // 是否使用相同协议 (http/https)
-            useSameProtocol: true,
-
-            // 是否拼接API路径
-            appendApiPath: true,
-
-            // API路径
-            apiPath: '/api/v2'
-        }
-    },
-
-    // 是否启用中间件代理API请求
-    // 设置为true时，所有API请求将通过中间件转发
-    API_MIDDLEWARE_ENABLED: false,
-
-    // 中间件服务器URL (不含路径)
-    API_MIDDLEWARE_URL: 'apifu.992982.xyz',
-
-    // 中间件路由前缀 (与中间件服务器配置保持一致)
-    API_MIDDLEWARE_PATH: '/api/v1',
-
-    //=======================================================
-
     // ====================  网站基础配置  ====================
     SITE_CONFIG: {
         siteName: '黑心云|府',
@@ -257,9 +207,6 @@ export const config  = {
 
         // ===============================
 
-        // 是否显示在线设备数量限制 (true=显示, false=隐藏，仅Xiao-V2board支持)
-        showOnlineDevicesLimit: true,
-        
         // 是否显示导入订阅
         showImportSubscription: true,
 
@@ -331,18 +278,14 @@ export const config  = {
         showHiddifyMac: true
     },
 
-    // ================ Xiao 版本的配置 =======================
-
     // 用户中心页面配置
     PROFILE_CONFIG: {
         // 是否显示礼品卡兑换栏目 (true=显示, false=隐藏)
-        showGiftCardRedeem: true, // 只有Xiao-V2board支持礼品卡兑换
+        showGiftCardRedeem: true,
 
         // 是否显示最近登录设备栏目 (true=显示, false=隐藏)
         showRecentDevices: true
     },
-
-    // =======================================================
 
     // 安全配置 (仅包含前端域名授权开关，有利于保护您的主题不被别人窃取)
     SECURITY_CONFIG: {
@@ -427,20 +370,6 @@ export const config  = {
         // 开启后，用户进入支付页面时将自动选择列表中的第一个支付方式，无需手动点击选择
         autoSelectFirstMethod: true  // 默认开启
     },
-
-    // 充值相关配置
-    WALLET_CONFIG: {
-        // 预设充值金额选项（单位：元）
-        presetAmounts: [6, 30, 68, 128, 256, 328, 648, 1280],
-
-        // 默认选中的充值金额（如果设为null则不预选金额）
-        defaultSelectedAmount: null,
-
-        // 最小充值金额（单位：元）
-        minimumDepositAmount: 1
-    },
-
-    // =======================================================
 
     // 邀请页面配置
     INVITE_CONFIG: {
@@ -593,7 +522,7 @@ export const config  = {
     },
     // 盾牌（Cloudflare Turnstile）配置
     SHIELD_CONFIG: {
-        enabled: false,
+        enabled: true,
         // TODO: 替换为你的 Turnstile Site Key（公钥）
         turnstileSiteKey: '0x4AAAAAACH320Zxv1U_IfyS',
         tokenTtlMs: 3 * 60 * 60 * 1000,
