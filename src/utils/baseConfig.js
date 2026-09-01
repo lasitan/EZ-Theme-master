@@ -35,9 +35,25 @@ const isObject = item => {
     return (item && typeof item === 'object' && !Array.isArray(item));
 };
 
+const envStr = (key, fallback = '') => {
+    const value = process.env[key];
+    return (value === undefined || value === '') ? fallback : value;
+};
 
-// Xboard 固定 API 路径
-export const API_BASE_URL = '/api/v1';
+const envBool = (key, fallback = false) => {
+    const value = process.env[key];
+    if (value === undefined || value === '') return fallback;
+    return value === 'true' || value === '1';
+};
+
+const envList = (key, fallback = []) => {
+    const value = process.env[key];
+    if (!value) return fallback;
+    return value.split(',').map((item) => item.trim()).filter(Boolean);
+};
+
+// Xboard API 路径，可通过 VUE_APP_API_BASE_URL 覆盖
+export const API_BASE_URL = envStr('VUE_APP_API_BASE_URL', '/api/v1').replace(/\/+$/, '') || '/api/v1';
 export const getApiBaseUrl = () => API_BASE_URL;
 
 /**
@@ -55,10 +71,9 @@ const DEFAULT_SECURITY_CONFIG = {
 export const SECURITY_CONFIG = mergeDeep(DEFAULT_SECURITY_CONFIG, getConfig('SECURITY_CONFIG'));
 
 // 授权的前端域名列表
-const DEFAULT_AUTHORIZED_DOMAINS = [
+const DEFAULT_AUTHORIZED_DOMAINS = envList('VUE_APP_AUTHORIZED_DOMAINS', [
     'panghu.com',
-    // 在此处添加您授权的其他域名
-];
+]);
 
 export const AUTHORIZED_DOMAINS = getConfig('AUTHORIZED_DOMAINS', DEFAULT_AUTHORIZED_DOMAINS);
 
@@ -100,13 +115,14 @@ const DEFAULT_CUSTOM_HEADERS_CONFIG = {
 export const CUSTOM_HEADERS_CONFIG = mergeDeep(DEFAULT_CUSTOM_HEADERS_CONFIG, getConfig('CUSTOM_HEADERS'));
 
 // 网站名称配置
+const DEFAULT_SITE_NAME = envStr('VUE_APP_SITE_NAME', '黑心云');
 const DEFAULT_SITE_CONFIG = {
-    siteName: '黑心云',
-    siteDescription: '世界那么大，我想云游一下',
-    copyright: `© ${new Date().getFullYear()} 黑心云. All Rights Reserved.`,
+    siteName: DEFAULT_SITE_NAME,
+    siteDescription: envStr('VUE_APP_SITE_DESCRIPTION', DEFAULT_SITE_NAME),
+    copyright: `© ${new Date().getFullYear()} ${DEFAULT_SITE_NAME}. All Rights Reserved.`,
 
     // 是否显示标题中的网站Logo (true=显示, false=隐藏)
-    showLogo: true,
+    showLogo: envBool('VUE_APP_SHOW_LOGO', true),
 
     // Landing页面多语言标语
     landingText: {
@@ -138,7 +154,7 @@ const DEFAULT_BASE_CONFIG = {
     primaryColor: '#00947c',
 
     // 是否启用落地页 (true=启用, false=禁用) TODO
-    enableLandingPage: true
+    enableLandingPage: envBool('VUE_APP_ENABLE_LANDING_PAGE', true)
 };
 
 export const DEFAULT_CONFIG = mergeDeep(DEFAULT_BASE_CONFIG, getConfig('DEFAULT_CONFIG'));
@@ -404,7 +420,7 @@ const DEFAULT_DASHBOARD_CONFIG = {
     showImportSubscription: true,
 
     // 群聊链接地址（用于仪表盘“群聊吹水”按钮）
-    groupChatUrl: '',
+    groupChatUrl: envStr('VUE_APP_GROUP_CHAT_URL', ''),
 };
 
 export const DASHBOARD_CONFIG = mergeDeep(DEFAULT_DASHBOARD_CONFIG, getConfig('DASHBOARD_CONFIG'));
@@ -772,9 +788,9 @@ export const AUTH_CONFIG = mergeDeep(DEFAULT_AUTH_CONFIG, getConfig('AUTH_CONFIG
  * 盾牌（Cloudflare Turnstile）配置
  */
 const DEFAULT_SHIELD_CONFIG = {
-    enabled: true,
-    // Turnstile 公钥（siteKey）。请在 src/config/index.js 中通过 window.EZ_CONFIG 覆盖
-    turnstileSiteKey: '',
+    enabled: envBool('VUE_APP_TURNSTILE_ENABLED', true),
+    // Turnstile 公钥（siteKey），可通过 VUE_APP_TURNSTILE_SITE_KEY 覆盖
+    turnstileSiteKey: envStr('VUE_APP_TURNSTILE_SITE_KEY', ''),
     // 令牌时长（毫秒）默认3小时
     tokenTtlMs: 3 * 60 * 60 * 1000,
     // 禁用CF预先许可，完全依赖面板自发令牌

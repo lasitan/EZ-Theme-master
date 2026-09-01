@@ -1,19 +1,27 @@
 /**
  * 外部配置文件
- * index.html 中可以搜索 EZ 将其替换为您的网站名称
+ * 站点相关变量优先从 .env / .env.production 的 VUE_APP_* 读取
  * logo 摆放位置为 images/logo.png
  */
+
+const siteName = process.env.VUE_APP_SITE_NAME || '黑心云|府';
+const siteDescription = process.env.VUE_APP_SITE_DESCRIPTION || siteName;
+const groupChatUrl = process.env.VUE_APP_GROUP_CHAT_URL || 'https://t.me/heixinyun_chat';
+const authorizedDomains = (process.env.VUE_APP_AUTHORIZED_DOMAINS || 'heixin.pp.ua')
+    .split(',')
+    .map((domain) => domain.trim())
+    .filter(Boolean);
 
 export const config  = {
     // ====================  网站基础配置  ====================
     SITE_CONFIG: {
-        siteName: '黑心云|府',
-        siteDescription: '黑心云|府',
+        siteName,
+        siteDescription,
         // copyright会自动使用当前年份
-        copyright: `© ${new Date().getFullYear()} 黑心云|府. All Rights Reserved.`,
+        copyright: `© ${new Date().getFullYear()} ${siteName}. All Rights Reserved.`,
 
         // 是否显示标题中的网站Logo (true=显示, false=隐藏)
-        showLogo: true,
+        showLogo: process.env.VUE_APP_SHOW_LOGO !== 'false',
 
         // Landing页面多语言标语
         landingText: {
@@ -45,7 +53,7 @@ export const config  = {
         primaryColor: '#355cc2',
 
         // 是否启用落地页 (true=启用, false=禁用)
-        enableLandingPage: true // 默认启用
+        enableLandingPage: process.env.VUE_APP_ENABLE_LANDING_PAGE !== 'false'
     },
 
     // 认证页面功能配置
@@ -211,7 +219,7 @@ export const config  = {
         showImportSubscription: true,
 
         // 群聊链接地址（用于仪表盘“群聊吹水”按钮）
-        groupChatUrl: 'https://t.me/heixinyun_chat',
+        groupChatUrl,
     },
 
     // 客户端下载配置
@@ -296,9 +304,7 @@ export const config  = {
     },
 
     // 授权的前端域名列表 (新增)
-    AUTHORIZED_DOMAINS: [
-        "heixin.pp.ua"
-    ],
+    AUTHORIZED_DOMAINS: authorizedDomains,
 
     // 验证码配置
     CAPTCHA_CONFIG: {
@@ -512,7 +518,7 @@ export const config  = {
                 title: 'Telegram',
                 description: '加入我们的Telegram频道',
                 svgIcon: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-telegram" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>',
-                url: 'https://t.me/heixinyun_chat',
+                url: groupChatUrl,
                 openInNewTab: true
             }
             // 可以继续添加更多卡片...
@@ -522,9 +528,8 @@ export const config  = {
     },
     // 盾牌（Cloudflare Turnstile）配置
     SHIELD_CONFIG: {
-        enabled: true,
-        // TODO: 替换为你的 Turnstile Site Key（公钥）
-        turnstileSiteKey: '0x4AAAAAACH320Zxv1U_IfyS',
+        enabled: process.env.VUE_APP_TURNSTILE_ENABLED !== 'false',
+        turnstileSiteKey: process.env.VUE_APP_TURNSTILE_SITE_KEY || '',
         tokenTtlMs: 3 * 60 * 60 * 1000,
         
     },

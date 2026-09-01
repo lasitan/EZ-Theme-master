@@ -54,6 +54,10 @@ module.exports = defineConfig({
             
             try {
               let content = fs.readFileSync(configPath, "utf-8");
+              content = content.replace(/process\.env(?:\.([A-Za-z_][A-Za-z0-9_]*)|\[\s*['"]([A-Za-z_][A-Za-z0-9_]*)['"]\s*\])/g, (_, dotKey, bracketKey) => {
+                const key = dotKey || bracketKey;
+                return JSON.stringify(process.env[key] ?? "");
+              });
               content = content.replace(/window\.EZ_CONFIG\s*=\s*config\s*;?/g, "");
               content = content.replace(/export\s+const\s+config\s*=/, "window.EZ_CONFIG =");
               
