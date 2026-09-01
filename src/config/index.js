@@ -1,6 +1,6 @@
 /**
  * 外部配置文件
- * 全部站点配置从 .env / .env.* 的 VUE_APP_* 读取
+ * 全部站点配置从 .env 的 VUE_APP_* 读取
  * logo 摆放位置为 images/logo.png
  */
 
