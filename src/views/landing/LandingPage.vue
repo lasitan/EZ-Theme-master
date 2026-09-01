@@ -159,7 +159,7 @@ import { useI18n } from 'vue-i18n';
 
 import { SITE_CONFIG, DEFAULT_CONFIG } from '@/utils/baseConfig';
 
-import request from '@/api/request';
+import { fetchGuestPlans } from '@/api/shop';
 
 import MarkdownIt from 'markdown-it';
 
@@ -450,10 +450,7 @@ export default {
       if (plansFetchPromise) return plansFetchPromise;
 
       loadingPlans.value = true;
-      plansFetchPromise = request({
-        url: '/guest/plan/fetch',
-        method: 'get'
-      })
+      plansFetchPromise = fetchGuestPlans()
         .then((res) => {
           plans.value = Array.isArray(res?.data) ? res.data : [];
           return plans.value;

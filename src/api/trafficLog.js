@@ -1,10 +1,9 @@
-﻿
-import request from './request';
-
-
-export function getTrafficLog() {
-  return request({
-    url: '/user/stat/getTrafficLog',
-    method: 'get'
-  });
-} 
+﻿import request from './request';
+import { XB } from './endpoints';
+
+export function getTrafficLog() {
+  return request({
+    url: XB.user.trafficLog,
+    method: 'get'
+  });
+}

@@ -1,80 +1,37 @@
 ﻿import request from './request';
-
+import { XB } from './endpoints';
 
 export function getUserInfo() {
-
-    return request({
-
-        url: '/user/info',
-
-        method: 'get'
-
-    });
-
+  return request({
+    url: XB.user.info,
+    method: 'get'
+  });
 }
-
 
 export function getSubscribe() {
-
-    return request({
-
-        url: '/user/getSubscribe',
-
-        method: 'get'
-
-    });
-
+  return request({
+    url: XB.user.getSubscribe,
+    method: 'get'
+  });
 }
-
 
 export function getNotices() {
-
-    return request({
-
-        url: '/user/notice/fetch',
-
-        method: 'get'
-
-    });
-
+  return request({
+    url: XB.user.noticeFetch,
+    method: 'get'
+  });
 }
-
 
 export function getUserStats() {
-
-    return request({
-
-        url: '/user/getStat',
-
-        method: 'get'
-
-    });
-
+  return request({
+    url: XB.user.getStat,
+    method: 'get'
+  });
 }
-
 
 export function getUserConfig() {
-
-    return request({
-
-        url: '/user/comm/config',
-
-        method: 'get'
-
-    });
-
+  return request({
+    url: XB.user.commConfig,
+    method: 'get'
+  });
 }
-
-export function setNextPeriod() {
-
-    return request({
-
-        url: '/user/newPeriod',
-
-        method: 'POST'
-
-    });
-
-}
-
-

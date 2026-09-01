@@ -1,18 +1,16 @@
-﻿
-import request from './request';
-
+﻿import request from './request';
+import { XB } from './endpoints';
 
 export function getInviteData() {
   return request({
-    url: '/user/invite/fetch',
+    url: XB.user.invite.fetch,
     method: 'get'
   });
 }
 
-
 export function getInviteDetails(current, pageSize) {
   return request({
-    url: '/user/invite/details',
+    url: XB.user.invite.details,
     method: 'get',
     params: {
       current,
@@ -21,26 +19,23 @@ export function getInviteDetails(current, pageSize) {
   });
 }
 
-
 export function getCommissionConfig() {
   return request({
-    url: '/user/comm/config',
+    url: XB.user.commConfig,
     method: 'get'
   });
 }
-
 
 export function generateInviteCode() {
   return request({
-    url: '/user/invite/save',
+    url: XB.user.invite.save,
     method: 'get'
   });
 }
 
-
 export function transferCommission(amount) {
   return request({
-    url: '/user/transfer',
+    url: XB.user.transfer,
     method: 'post',
     data: {
       transfer_amount: amount
@@ -48,10 +43,9 @@ export function transferCommission(amount) {
   });
 }
 
-
 export function withdrawCommission(amount, account, method) {
   return request({
-    url: '/user/ticket/withdraw',
+    url: XB.user.ticket.withdraw,
     method: 'post',
     data: {
       withdraw_amount: amount,
@@ -59,4 +53,4 @@ export function withdrawCommission(amount, account, method) {
       withdraw_method: method
     }
   });
-} 
+}

@@ -1,8 +1,9 @@
 import request from './request';
+import { XB } from './endpoints';
 
 export function checkGiftCard(code) {
   return request({
-    url: '/user/gift-card/check',
+    url: XB.user.giftCard.check,
     method: 'post',
     data: { code }
   });
@@ -10,7 +11,7 @@ export function checkGiftCard(code) {
 
 export function redeemGiftCard(code) {
   return request({
-    url: '/user/gift-card/redeem',
+    url: XB.user.giftCard.redeem,
     method: 'post',
     data: { code }
   });
@@ -18,7 +19,7 @@ export function redeemGiftCard(code) {
 
 export function getGiftCardHistory(params) {
   return request({
-    url: '/user/gift-card/history',
+    url: XB.user.giftCard.history,
     method: 'get',
     params
   });
@@ -26,7 +27,7 @@ export function getGiftCardHistory(params) {
 
 export function getGiftCardDetail(params) {
   return request({
-    url: '/user/gift-card/detail',
+    url: XB.user.giftCard.detail,
     method: 'get',
     params
   });
@@ -34,7 +35,7 @@ export function getGiftCardDetail(params) {
 
 export function getGiftCardTypes() {
   return request({
-    url: '/user/gift-card/types',
+    url: XB.user.giftCard.types,
     method: 'get'
   });
 }

@@ -1,10 +1,11 @@
 ﻿import axios from 'axios';
 
 import request from './request';
+import { XB } from './endpoints';
 
 export function getUserInfo() {
   return request({
-    url: '/user/info',
+    url: XB.user.info,
     method: 'get'
   });
 }
@@ -61,57 +62,69 @@ export function getIpLocationInfo() {
 
 export function changePassword(data) {
   return request({
-    url: '/user/changePassword',
+    url: XB.user.changePassword,
     method: 'post',
     data
   });
 }
-
 
 export function resetSecurity() {
   return request({
-    url: '/user/resetSecurity',
+    url: XB.user.resetSecurity,
     method: 'get'
   });
 }
 
-
 export function updateRemindSettings(data) {
   return request({
-    url: '/user/update',
+    url: XB.user.update,
     method: 'post',
     data
   });
 }
 
-
 export function getActiveSession() {
   return request({
-    url: '/user/getActiveSession',
+    url: XB.user.getActiveSession,
     method: 'get'
   });
 }
 
+export function removeActiveSession(sessionId) {
+  return request({
+    url: XB.user.removeActiveSession,
+    method: 'post',
+    data: {
+      session_id: sessionId
+    }
+  });
+}
 
 export function getCommConfig() {
   return request({
-    url: '/user/comm/config',
+    url: XB.user.commConfig,
     method: 'get'
   });
 }
-
 
 export function getTelegramBotInfo() {
   return request({
-    url: '/user/telegram/getBotInfo',
+    url: XB.user.telegramBotInfo,
     method: 'get'
   });
 }
 
-
 export function getUserSubscribe() {
   return request({
-    url: '/user/getSubscribe',
+    url: XB.user.getSubscribe,
     method: 'get'
+  });
+}
+
+export function getQuickLoginUrl(redirect) {
+  return request({
+    url: XB.user.getQuickLoginUrl,
+    method: 'post',
+    data: redirect ? { redirect } : {}
   });
 } 

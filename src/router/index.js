@@ -143,9 +143,9 @@ const routes = [
         } catch (e) {}
       }
 
-      if (authData && authToken) {
+      if (authToken) {
         try {
-          handleLoginSuccess({ token: authToken, auth_data: authData }, false);
+          handleLoginSuccess({ token: authToken, auth_data: authData || undefined }, false);
         } catch (e) {}
 
         const redirectRaw = to.query && typeof to.query.redirect !== 'undefined' ? String(to.query.redirect || '') : '';
@@ -156,7 +156,7 @@ const routes = [
       }
 
       if (!token) {
-        if (verify || (authData && authToken)) {
+        if (verify || authToken) {
           next();
           return;
         }
@@ -164,7 +164,7 @@ const routes = [
         return;
       }
       if (!isValidLoginObfToken(token)) {
-        if (verify || (authData && authToken)) {
+        if (verify || authToken) {
           next();
           return;
         }
@@ -616,8 +616,8 @@ router.beforeEach(async (to, from, next) => {
   try {
     const authData = to.query && typeof to.query.auth_data !== 'undefined' ? String(to.query.auth_data || '') : '';
     const token = to.query && typeof to.query.token !== 'undefined' ? String(to.query.token || '') : '';
-    if (authData && token) {
-      handleLoginSuccess({ token, auth_data: authData }, false);
+    if (token) {
+      handleLoginSuccess({ token, auth_data: authData || undefined }, false);
 
       const redirectRaw = to.query && typeof to.query.redirect !== 'undefined' ? String(to.query.redirect || '') : '';
       const currentPath = to.path ? String(to.path) : '';

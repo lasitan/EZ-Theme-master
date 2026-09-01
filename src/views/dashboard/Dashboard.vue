@@ -736,7 +736,7 @@ import {
   IconCalendarPlus
 } from '@tabler/icons-vue';
 import CommonDialog from '@/components/popup/CommonDialog.vue';
-import {getNotices, getSubscribe, getUserConfig, getUserInfo, getUserStats, setNextPeriod} from '@/api/dashboard';
+import {getNotices, getSubscribe, getUserConfig, getUserInfo, getUserStats} from '@/api/dashboard';
 import {useToast} from '@/composables/useToast';
 import {submitOrder} from '@/api/shop';
 import MarkdownIt from 'markdown-it';
@@ -1033,20 +1033,8 @@ export default {
 
     };
     const handlePopupConfirm = async () => {
-      try {
-        const response = await setNextPeriod()
-        console.log(response)
-        if (response.data) {
-          await fetchSubscribe()
-          showToast(t('dashboard.nextPeriodSuccess'), 'success');
-          showPopup.value = false;
-        }
-      } catch (error) {
-        console.error('提前开启下月失败:', error);
-        showToast(t('dashboard.nextPeriodError'), 'error');
-      }
-
-    }
+      showPopup.value = false;
+    };
 
     const closeResetTrafficModal = () => {
       showResetTrafficModal.value = false;

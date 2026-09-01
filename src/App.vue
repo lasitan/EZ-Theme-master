@@ -84,7 +84,7 @@ import { useTheme } from '@/composables/useTheme';
 import { useRouter, useRoute } from 'vue-router';
 import { SITE_CONFIG, PROFILE_CONFIG, CUSTOMER_SERVICE_CONFIG } from '@/utils/baseConfig';
 import { checkAuthAndReloadMessages } from '@/utils/authUtils';
-import { checkUserLoginStatus } from '@/api/auth';
+import { verifyAuthSession } from '@/api/auth';
 import { getPendingApiCount } from '@/api/request';
 import { handleRedirectPath } from '@/utils/redirectHandler';
 import Toast from '@/components/common/Toast.vue';
@@ -221,7 +221,7 @@ export default {
       if (!document.hidden) {
         checkAuthAndReloadMessages();
         
-        checkUserLoginStatus().then(result => {
+        verifyAuthSession().then(result => {
           if (result.isLoggedIn === false && result.message) {
             const { showToast } = require('@/composables/useToast').useToast();
             if (showToast) {
@@ -257,7 +257,7 @@ export default {
       
       document.addEventListener('visibilitychange', handleVisibilityChange);
       
-      checkUserLoginStatus().then(result => {
+      verifyAuthSession().then(result => {
         if (result.isLoggedIn === false && result.message) {
           const { showToast } = require('@/composables/useToast').useToast();
           if (showToast) {

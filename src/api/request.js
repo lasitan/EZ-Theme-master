@@ -97,6 +97,13 @@ request.interceptors.request.use(
         }
       }
     }
+
+    if (!authData) {
+      const token = localStorage.getItem('token');
+      if (token && token !== 'undefined' && token !== 'null' && token !== '') {
+        authData = /^Bearer\s+/i.test(token) ? token : `Bearer ${token}`;
+      }
+    }
     
     if (authData) {
       config.headers['Authorization'] = authData;
