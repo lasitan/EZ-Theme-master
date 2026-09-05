@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "vueCompilerOptions": {
@@ -10,5 +9,3 @@
   },
   "exclude": ["node_modules", "dist"]
 }
-
-

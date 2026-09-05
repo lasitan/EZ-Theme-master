@@ -11,22 +11,37 @@ module.exports = defineConfig({
   assetsDir: "static",
   lintOnSave: false,
   productionSourceMap: false,
-  
+  transpileDependencies: false,
+  parallel: true,
+  css: {
+    sourceMap: false,
+    loaderOptions: {
+      sass: {
+        implementation: require("sass"),
+        sassOptions: {
+          quietDeps: true,
+          silenceDeprecations: ["legacy-js-api", "import"],
+        },
+        additionalData: `@use "@/assets/styles/base/variables.scss" as *;`,
+      },
+    },
+  },
   configureWebpack: (config) => {
-    config.experiments = { ...config.experiments, asyncWebAssembly: true, syncWebAssembly: true };
     config.resolve = { ...config.resolve, alias: { "@": path.resolve(__dirname, "src") } };
-    
     config.plugins.push(
       new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: JSON.stringify(true),
         __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(false),
-        // 避免依赖包中的 import.meta.env.TEST 在运行时触发语法错误，构建期直接替换为 false
-        'import.meta.env.TEST': 'false',
+        "import.meta.env.TEST": "false",
       })
     );
-    
-    if (isProd) {
+
+    if (!isProd) {
+      config.cache = { type: "filesystem" };
+      config.devtool = "eval-cheap-module-source-map";
+      config.watchOptions = { ignored: /node_modules/ };
+    } else {
       config.optimization = {
         ...config.optimization,
         splitChunks: {
@@ -46,20 +61,33 @@ module.exports = defineConfig({
       };
     }
   },
-  
-  css: {
-    loaderOptions: {
-      sass: {
-        implementation: require("sass"),
-        sassOptions: { outputStyle: "expanded", fiber: false, indentedSyntax: false, includePaths: ["node_modules"] },
-        additionalData: `@use "@/assets/styles/base/variables.scss" as *;`,
-      },
-    },
+  chainWebpack: (config) => {
+    if (!isProd) {
+      config.plugins.delete("prefetch-index");
+      config.plugins.delete("preload-index");
+    }
   },
-  
   pages: {
     index: { entry: "src/main.js", template: "public/index.html", filename: "index.html" },
   },
-  
-  devServer: { client: { overlay: false } },
+  devServer: {
+    hot: true,
+    client: { overlay: false },
+    proxy: {
+      "/api": {
+        target: process.env.VUE_APP_API_PROXY_TARGET || "http://127.0.0.1:3000",
+        changeOrigin: true,
+        ws: false,
+        timeout: 30000,
+        proxyTimeout: 30000,
+        onError(err, _req, res) {
+          console.warn(`[proxy] 无法连接 ${process.env.VUE_APP_API_PROXY_TARGET || "http://127.0.0.1:3000"} (${err.code || err.message})`);
+          if (res && !res.headersSent) {
+            res.writeHead(502, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ message: "后端未启动或代理失败，请确认 VUE_APP_API_PROXY_TARGET 对应服务已运行" }));
+          }
+        },
+      },
+    },
+  },
 });

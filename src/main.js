@@ -1,6 +1,4 @@
-﻿import disableDevtool from "disable-devtool";
-
-const isProd = process.env.NODE_ENV === "production";
+﻿const isProd = process.env.NODE_ENV === "production";
 let enableAntiDebugging = process.env.VUE_APP_DEBUGGING == "true";
 
 (async () => {
@@ -15,9 +13,9 @@ let enableAntiDebugging = process.env.VUE_APP_DEBUGGING == "true";
       } catch (_) {}
     }
     
-    // 反调试逻辑
     if (isProd && enableAntiDebugging) {
-      disableDevtool()
+      const { default: disableDevtool } = await import("disable-devtool");
+      disableDevtool();
     }
     
     // ⚠️ 确保在 config 加载后再初始化应用

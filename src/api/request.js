@@ -26,16 +26,14 @@ export const getPendingApiCount = () => _pendingCount;
 
 const request = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000, 
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  timeout: 30000
 });
 
 request.interceptors.request.use(
   config => {
     _incPending();
 
+    // 仅 POST 设置 Content-Type，避免 GET 带 application/json 触发多余 CORS 预检
     if (config.method === 'post' && config.data) {
       const formData = new URLSearchParams();
       for (const key in config.data) {
