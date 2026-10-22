@@ -256,7 +256,11 @@ export default {
         invite: '拉人返利',
         more: '更多折腾',
         commission: '回血明细',
-        hotSale: '人气爆款'
+        hotSale: '人气爆款',
+        adminOverview: '概览',
+        adminBusiness: '业务',
+        adminContent: '内容',
+        adminSystem: '系统'
     },
     more: {
         title: '更多花活',
@@ -866,6 +870,155 @@ export default {
         welcome: {
             title: '账户充值',
             description: '在这里您可以轻松地为您的账户充值，选择预设金额或输入自定义金额进行充值。充值后的余额将立即到账并可用于购买我们的服务。'
+        }
+    },
+    admin: {
+        enter: '管理端',
+        backToUser: '返回用户端',
+        loading: '正在加载...',
+        retry: '重试',
+        empty: '暂无数据',
+        actions: '操作',
+        save: '保存',
+        cancel: '取消',
+        confirm: '确认',
+        confirmTitle: '请确认',
+        create: '新建',
+        edit: '编辑',
+        delete: '删除',
+        search: '搜索',
+        refresh: '刷新',
+        saved: '已保存',
+        deleted: '已删除',
+        failed: '操作失败',
+        show: '显示',
+        hide: '隐藏',
+        enable: '启用',
+        disable: '停用',
+        overview: {
+            title: '管理概览',
+            description: '查看收入、订单、流量和系统状态',
+            todayIncome: '今日收入',
+            monthIncome: '本月收入',
+            tickets: '待处理工单',
+            commission: '待处理佣金',
+            orders: '订单趋势',
+            rank: '流量排行',
+            nodeRank: '节点',
+            userRank: '用户',
+            system: '系统状态',
+            logs: '系统日志',
+            clear: '清理日志',
+            days7: '近 7 天',
+            days30: '近 30 天',
+            days90: '近 90 天'
+        },
+        business: {
+            title: '业务',
+            description: '订单、套餐、用户和节点'
+        },
+        content: {
+            title: '内容',
+            description: '公告、优惠券、礼品卡、工单和知识库'
+        },
+        system: {
+            title: '系统',
+            description: '配置、支付、插件和流量记录'
+        },
+        orders: {
+            title: '订单',
+            description: '筛选、改价、标记支付、取消和分配订单',
+            assign: '分配订单',
+            detail: '详情',
+            paid: '标记已付',
+            price: '改价',
+            commissionPay: '发放佣金',
+            commissionInvalid: '佣金无效'
+        },
+        plans: {
+            title: '套餐',
+            description: '维护可售套餐、价格、显隐和排序',
+            sell: '在售'
+        },
+        users: {
+            title: '用户',
+            description: '查找用户，调整余额、封禁、流量和订阅',
+            generate: '批量创建',
+            mail: '发信',
+            export: '导出 CSV',
+            ban: '封禁',
+            unban: '解封',
+            resetSecret: '重置密钥',
+            resetTraffic: '重置流量',
+            copySubscribe: '复制订阅',
+            theirOrders: 'TA 的订单',
+            theirTraffic: '流量明细'
+        },
+        nodes: {
+            title: '节点',
+            description: '维护节点地址、协议和显隐',
+            copy: '复制'
+        },
+        notices: {
+            title: '公告',
+            description: '发布、排序和显隐公告'
+        },
+        coupons: {
+            title: '优惠券',
+            description: '生成、修改和停用优惠券'
+        },
+        giftCards: {
+            title: '礼品卡',
+            description: '模板、兑换码、使用记录和统计',
+            templates: '模板',
+            codes: '兑换码',
+            usages: '使用记录',
+            stats: '统计',
+            generate: '生成卡密',
+            export: '导出'
+        },
+        tickets: {
+            title: '工单',
+            description: '查看用户消息、回复并关闭工单',
+            open: '处理中',
+            closed: '已关闭',
+            reply: '回复',
+            close: '关闭工单'
+        },
+        knowledge: {
+            title: '知识库',
+            description: '维护文档分类、正文和显隐'
+        },
+        config: {
+            title: '系统配置',
+            description: '站点、安全、订阅、邀请、节点、邮件和订阅模板',
+            testMail: '测试发信',
+            site: '站点设置',
+            safe: '安全设置',
+            subscribe: '订阅设置',
+            invite: '邀请与佣金',
+            server: '节点配置',
+            mail: '邮件设置',
+            subscribe_template: '订阅模板'
+        },
+        payments: {
+            title: '支付',
+            description: '维护支付方式、配置和排序'
+        },
+        plugins: {
+            title: '插件',
+            description: '安装、启停和配置插件',
+            scan: '扫描',
+            discover: '发现',
+            reload: '重载',
+            upload: '上传文件夹',
+            config: '配置'
+        },
+        traffic: {
+            title: '流量记录',
+            description: '流量重置日志和用户用量',
+            resets: '重置日志',
+            usage: '用户用量'
         }
     }
 }; 

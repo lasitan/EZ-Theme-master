@@ -52,6 +52,14 @@
 
         </div>
 
+        <div v-if="isAdmin" class="menu-item" @click="navigateTo(inAdmin ? '/dashboard' : '/admin')">
+
+          <IconSettings class="menu-icon" />
+
+          <span>{{ inAdmin ? $t('admin.backToUser') : $t('admin.enter') }}</span>
+
+        </div>
+
         <div class="divider"></div>
 
         <div class="menu-item" @click="logout">
@@ -74,9 +82,9 @@
 
 <script>
 
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { useI18n } from 'vue-i18n';
 
@@ -88,6 +96,8 @@ import IconUser from '@/components/icons/IconUser.vue';
 import IconLogout from '@/components/icons/IconLogout.vue';
 
 import IconLock from '@/components/icons/IconLock.vue';
+
+import IconSettings from '@/components/icons/IconSettings.vue';
 
 
 
@@ -101,7 +111,9 @@ export default {
 
     IconLogout,
 
-    IconLock
+    IconLock,
+
+    IconSettings
 
   },
 
@@ -128,6 +140,12 @@ export default {
   setup() {
 
     const router = useRouter();
+
+    const route = useRoute();
+
+    const isAdmin = computed(() => localStorage.getItem('is_admin') === '1');
+
+    const inAdmin = computed(() => route.path.startsWith('/admin'));
 
     const { t } = useI18n();
 
@@ -224,7 +242,11 @@ export default {
 
       logout,
 
-      avatarContainer
+      avatarContainer,
+
+      isAdmin,
+
+      inAdmin
 
     };
 

@@ -33,8 +33,13 @@ request.interceptors.request.use(
   config => {
     _incPending();
 
-    // 仅 POST 设置 Content-Type，避免 GET 带 application/json 触发多余 CORS 预检
-    if (config.method === 'post' && config.data) {
+    const method = String(config.method || 'get').toLowerCase();
+    const isFormData = typeof FormData !== 'undefined' && config.data instanceof FormData;
+    const sendJson = config.json === true;
+    const isBlob = config.responseType === 'blob';
+
+    // 用户端 POST 默认表单。管理端嵌套 JSON、文件上传和文件下载不走这层改写。
+    if (method === 'post' && config.data && !sendJson && !isFormData && !isBlob) {
       const formData = new URLSearchParams();
       for (const key in config.data) {
         if (Object.prototype.hasOwnProperty.call(config.data, key)) {
@@ -44,6 +49,8 @@ request.interceptors.request.use(
       
       config.data = formData;
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    } else if (sendJson && config.data && !isFormData) {
+      config.headers['Content-Type'] = 'application/json';
     }
     
     let authData = localStorage.getItem('auth_data');

@@ -29,7 +29,8 @@ export const resolveLoginAuth = (responseData) => {
 };
 
 const persistAdminFlag = (isAdmin) => {
-  if (isAdmin === true || isAdmin === 1 || isAdmin === '1') {
+  const flag = typeof isAdmin === 'string' ? isAdmin.trim().toLowerCase() : isAdmin;
+  if (flag === true || flag === 1 || flag === '1' || flag === 'true') {
     localStorage.setItem('is_admin', '1');
   } else {
     localStorage.removeItem('is_admin');

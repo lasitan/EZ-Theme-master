@@ -566,6 +566,109 @@ const routes = [
 
         }
 
+      },
+
+      {
+        path: 'admin',
+        name: 'AdminOverview',
+        component: () => import('@/views/admin/AdminDashboard.vue'),
+        meta: { titleKey: 'admin.overview.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminOverview' }
+      },
+      {
+        path: 'admin/business',
+        name: 'AdminBusiness',
+        component: () => import('@/views/admin/AdminHub.vue'),
+        meta: { titleKey: 'admin.business.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminBusiness' }
+      },
+      {
+        path: 'admin/content',
+        name: 'AdminContent',
+        component: () => import('@/views/admin/AdminHub.vue'),
+        meta: { titleKey: 'admin.content.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/system',
+        name: 'AdminSystem',
+        component: () => import('@/views/admin/AdminHub.vue'),
+        meta: { titleKey: 'admin.system.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminSystem' }
+      },
+      {
+        path: 'admin/orders',
+        name: 'AdminOrders',
+        component: () => import('@/views/admin/orders/AdminOrders.vue'),
+        meta: { titleKey: 'admin.orders.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminBusiness' }
+      },
+      {
+        path: 'admin/plans',
+        name: 'AdminPlans',
+        component: () => import('@/views/admin/plans/AdminPlans.vue'),
+        meta: { titleKey: 'admin.plans.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminBusiness' }
+      },
+      {
+        path: 'admin/users',
+        name: 'AdminUsers',
+        component: () => import('@/views/admin/users/AdminUsers.vue'),
+        meta: { titleKey: 'admin.users.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminBusiness' }
+      },
+      {
+        path: 'admin/nodes',
+        name: 'AdminNodes',
+        component: () => import('@/views/admin/nodes/AdminNodes.vue'),
+        meta: { titleKey: 'admin.nodes.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminBusiness' }
+      },
+      {
+        path: 'admin/notices',
+        name: 'AdminNotices',
+        component: () => import('@/views/admin/notice/AdminNotices.vue'),
+        meta: { titleKey: 'admin.notices.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/coupons',
+        name: 'AdminCoupons',
+        component: () => import('@/views/admin/coupons/AdminCoupons.vue'),
+        meta: { titleKey: 'admin.coupons.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/gift-cards',
+        name: 'AdminGiftCards',
+        component: () => import('@/views/admin/giftCard/AdminGiftCards.vue'),
+        meta: { titleKey: 'admin.giftCards.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/tickets',
+        name: 'AdminTickets',
+        component: () => import('@/views/admin/tickets/AdminTickets.vue'),
+        meta: { titleKey: 'admin.tickets.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/knowledge',
+        name: 'AdminKnowledge',
+        component: () => import('@/views/admin/knowledge/AdminKnowledge.vue'),
+        meta: { titleKey: 'admin.knowledge.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminContent' }
+      },
+      {
+        path: 'admin/config',
+        name: 'AdminConfig',
+        component: () => import('@/views/admin/config/AdminConfig.vue'),
+        meta: { titleKey: 'admin.config.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminSystem' }
+      },
+      {
+        path: 'admin/payments',
+        name: 'AdminPayments',
+        component: () => import('@/views/admin/payment/AdminPayments.vue'),
+        meta: { titleKey: 'admin.payments.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminSystem' }
+      },
+      {
+        path: 'admin/plugins',
+        name: 'AdminPlugins',
+        component: () => import('@/views/admin/plugins/AdminPlugins.vue'),
+        meta: { titleKey: 'admin.plugins.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminSystem' }
+      },
+      {
+        path: 'admin/traffic',
+        name: 'AdminTraffic',
+        component: () => import('@/views/admin/traffic/AdminTraffic.vue'),
+        meta: { titleKey: 'admin.traffic.title', requiresAuth: true, requiresAdmin: true, activeNav: 'AdminSystem' }
       }
 
     ]
@@ -739,6 +842,10 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'Login', params: { obf } });
     }
   } else if (to.name === 'Login' && token) {
+
+    next({ path: '/dashboard' });
+
+  } else if (to.matched.some((record) => record.meta && record.meta.requiresAdmin) && localStorage.getItem('is_admin') !== '1') {
 
     next({ path: '/dashboard' });
 
