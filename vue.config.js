@@ -5,6 +5,41 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const isProd = process.env.NODE_ENV === "production";
 
+const proxyTarget = process.env.VUE_APP_API_PROXY_TARGET || "http://127.0.0.1:3000";
+
+function proxyOptions() {
+  return {
+    target: proxyTarget,
+    changeOrigin: true,
+    ws: false,
+    timeout: 30000,
+    proxyTimeout: 30000,
+    onError(err, _req, res) {
+      console.warn(`[proxy] 无法连接 ${proxyTarget} (${err.code || err.message})`);
+      if (res && !res.headersSent) {
+        res.writeHead(502, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "后端未启动或代理失败，请确认 VUE_APP_API_PROXY_TARGET 对应服务已运行" }));
+      }
+    },
+  };
+}
+
+/** 与 baseConfig 一致：留空或 `/` 表示不加 /api/v1，开发时按接口根路径转发。 */
+function buildApiProxy() {
+  const configured = process.env.VUE_APP_API_BASE_URL;
+  const raw = configured === undefined ? "/api/v1" : String(configured).trim();
+  const proxy = {};
+  if (!raw || raw === "/") {
+    ["/guest", "/passport", "/user", "/admin", "/client"].forEach((prefix) => {
+      proxy[prefix] = proxyOptions();
+    });
+    return proxy;
+  }
+  const segment = raw.replace(/\/+$/, "").split("/").filter(Boolean)[0];
+  proxy[`/${segment}`] = proxyOptions();
+  return proxy;
+}
+
 module.exports = defineConfig({
   publicPath: "./",
   outputDir: "dist",
@@ -73,21 +108,6 @@ module.exports = defineConfig({
   devServer: {
     hot: true,
     client: { overlay: false },
-    proxy: {
-      "/api": {
-        target: process.env.VUE_APP_API_PROXY_TARGET || "http://127.0.0.1:3000",
-        changeOrigin: true,
-        ws: false,
-        timeout: 30000,
-        proxyTimeout: 30000,
-        onError(err, _req, res) {
-          console.warn(`[proxy] 无法连接 ${process.env.VUE_APP_API_PROXY_TARGET || "http://127.0.0.1:3000"} (${err.code || err.message})`);
-          if (res && !res.headersSent) {
-            res.writeHead(502, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ message: "后端未启动或代理失败，请确认 VUE_APP_API_PROXY_TARGET 对应服务已运行" }));
-          }
-        },
-      },
-    },
+    proxy: buildApiProxy(),
   },
 });

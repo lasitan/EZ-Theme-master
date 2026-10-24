@@ -52,8 +52,17 @@ const envList = (key, fallback = []) => {
     return value.split(',').map((item) => item.trim()).filter(Boolean);
 };
 
-// Xboard API 路径，可通过 VUE_APP_API_BASE_URL 覆盖
-export const API_BASE_URL = envStr('VUE_APP_API_BASE_URL', '/api/v1').replace(/\/+$/, '') || '/api/v1';
+// 留空或 `/` 表示站点根路径。不能把空字符串当成未配置再回退到 /api/v1。
+const normalizeApiBase = (value, fallback) => {
+    const raw = String(value ?? '').trim();
+    if (!raw || raw === '/') return fallback;
+    return raw.replace(/\/+$/, '') || fallback;
+};
+
+const configuredApiBase = process.env.VUE_APP_API_BASE_URL;
+export const API_BASE_URL = configuredApiBase === undefined
+    ? '/api/v1'
+    : normalizeApiBase(configuredApiBase, '/');
 export const getApiBaseUrl = () => API_BASE_URL;
 
 /**

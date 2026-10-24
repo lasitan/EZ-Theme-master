@@ -73,6 +73,7 @@ import { adminErrorMessage, extractRows, saveBlobOrThrow } from '@/api/admin/htt
 import { banAdminUser, destroyAdminUser, dumpAdminUsersCsv, fetchAdminUsers, generateAdminUsers, resetAdminUserSecret, sendAdminMail, setInviteUser, updateAdminUser } from '@/api/admin/user';
 import { resetUserTraffic } from '@/api/admin/traffic';
 import { centFromYuan, flagOn, formatUnix, yuanFromCent } from '@/utils/adminFormat';
+import { getApiBaseUrl } from '@/utils/baseConfig';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -209,7 +210,8 @@ async function generate() {
 async function copySubscribe(row) {
   const direct = row.subscribe_url;
   const token = row.token;
-  const url = direct || (token ? `${window.location.origin}/api/v1/client/subscribe?token=${encodeURIComponent(token)}` : '');
+  const base = String(getApiBaseUrl() || '/').replace(/\/+$/, '');
+  const url = direct || (token ? `${window.location.origin}${base}/client/subscribe?token=${encodeURIComponent(token)}` : '');
   if (!url) { showToast(t('admin.failed'), 'error'); return; }
   try {
     await navigator.clipboard.writeText(url);
