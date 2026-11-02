@@ -69,7 +69,13 @@
       <div class="card-header">
         <h3 class="card-title">{{ t('admin.overview.system') }}</h3>
       </div>
-      <pre class="pre-block">{{ statusText }}</pre>
+      <div v-if="statusRows.length" class="kv">
+        <template v-for="(row, index) in statusRows" :key="index">
+          <span>{{ row.label }}</span>
+          <span>{{ row.value }}</span>
+        </template>
+      </div>
+      <p v-else class="muted">{{ t('admin.empty') }}</p>
     </div>
 
     <div class="dashboard-card">
@@ -116,6 +122,7 @@ import { useToast } from '@/composables/useToast';
 import { adminErrorMessage, extractData, extractRows } from '@/api/admin/http';
 import { fetchAdminStats, fetchAdminOrders, fetchTrafficRank, fetchSystemStatus, fetchSystemLog, fetchLogClearStats, clearSystemLog } from '@/api/admin/stat';
 import { formatUnix, lastDaysRange, textOf, yuanFromCent } from '@/utils/adminFormat';
+import { readableRows } from '@/utils/recordFields';
 
 const { t } = useI18n();
 const { showToast } = useToast();
@@ -125,7 +132,7 @@ const stats = ref({});
 const orderRows = ref([]);
 const rankRows = ref([]);
 const logs = ref([]);
-const statusText = ref('—');
+const statusRows = ref([]);
 const period = ref(30);
 const rankType = ref('node');
 const logQ = ref('');
@@ -189,11 +196,11 @@ async function load() {
     const data = extractData(statRes) || {};
     stats.value = data && typeof data === 'object' && !Array.isArray(data) ? data : {};
     const status = extractData(statusRes);
-    statusText.value = typeof status === 'string' ? status : JSON.stringify(status, null, 2);
+    statusRows.value = typeof status === 'string' ? [{ label: '状态', value: status }] : readableRows(status);
     await Promise.all([loadOrders(), loadRank(), loadLogs()]);
     try {
       const clearRes = await fetchLogClearStats();
-      clearStats.value = JSON.stringify(extractData(clearRes));
+      clearStats.value = readableRows(extractData(clearRes)).map((row) => `${row.label} ${row.value}`).join('，');
     } catch (e) {
       clearStats.value = '';
     }

@@ -98,6 +98,7 @@ export default {
 .dialog-content {
   padding: 20px;
   overflow-y: auto;
+  max-height: 70vh;
 }
 
 .dialog-footer {

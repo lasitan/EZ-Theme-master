@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { textOf } from '@/utils/adminFormat';
+
 export default {
   name: 'AdminTable',
   props: {
@@ -58,13 +60,13 @@ export default {
   },
   methods: {
     rowKey(row) {
-      return row.id ?? row.trade_no ?? row.code ?? JSON.stringify(row).slice(0, 80);
+      return row.id ?? row.trade_no ?? row.code ?? row.email ?? row.domain ?? row.name;
     },
     showCell(row, col) {
       if (typeof col.format === 'function') return col.format(row);
       const value = row[col.key];
       if (value == null || value === '') return '—';
-      if (typeof value === 'object') return JSON.stringify(value);
+      if (typeof value === 'object') return textOf(value);
       return value;
     },
     changePage(next) {

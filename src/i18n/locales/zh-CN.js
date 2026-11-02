@@ -956,7 +956,7 @@ export default {
         },
         nodes: {
             title: '节点',
-            description: '维护节点地址、协议和显隐',
+            description: '节点、权限组、机器和证书',
             copy: '复制'
         },
         notices: {
@@ -991,13 +991,14 @@ export default {
         },
         config: {
             title: '系统配置',
-            description: '站点、安全、订阅、邀请、节点、邮件和订阅模板',
+            description: '站点、安全、订阅、节点通信和邮件',
             testMail: '测试发信',
             site: '站点设置',
             safe: '安全设置',
             subscribe: '订阅设置',
             invite: '邀请与佣金',
             server: '节点配置',
+            agent: '节点通信',
             mail: '邮件设置',
             subscribe_template: '订阅模板'
         },

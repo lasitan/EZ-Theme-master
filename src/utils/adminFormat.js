@@ -1,3 +1,5 @@
+import { briefObject } from './recordFields';
+
 export function formatUnix(ts) {
   if (ts == null || ts === '') return '—';
   const n = Number(ts);
@@ -41,7 +43,7 @@ export function lastDaysRange(days) {
 
 export function textOf(value) {
   if (value == null || value === '') return '—';
-  if (typeof value === 'object') return JSON.stringify(value);
+  if (typeof value === 'object') return briefObject(value);
   return String(value);
 }
 

@@ -43,7 +43,13 @@
     </div>
 
     <div v-else class="dashboard-card">
-      <pre class="pre-block">{{ statsText }}</pre>
+      <div v-if="statRows.length" class="kv">
+        <template v-for="(row, index) in statRows" :key="index">
+          <span>{{ row.label }}</span>
+          <span>{{ row.value }}</span>
+        </template>
+      </div>
+      <p v-else class="muted">{{ t('admin.empty') }}</p>
     </div>
 
     <AdminDialog :show="tplOpen" :title="tpl.id ? t('admin.edit') : t('admin.create')" wide @close="tplOpen = false">
@@ -100,6 +106,7 @@ import { useToast } from '@/composables/useToast';
 import { adminErrorMessage, extractData, extractRows, listBody, saveBlobOrThrow } from '@/api/admin/http';
 import { createGiftTemplate, deleteGiftCode, deleteGiftTemplate, exportGiftCodes, fetchGiftCodes, fetchGiftStatistics, fetchGiftTemplates, fetchGiftUsages, generateGiftCodes, toggleGiftCode, updateGiftCode, updateGiftTemplate } from '@/api/admin/giftCard';
 import { centFromYuan, formatUnix, textOf } from '@/utils/adminFormat';
+import { readableRows } from '@/utils/recordFields';
 
 const { t } = useI18n();
 const { showToast } = useToast();
@@ -109,7 +116,7 @@ const tab = ref('templates');
 const templates = ref([]);
 const codes = ref([]);
 const usages = ref([]);
-const statsText = ref('—');
+const statRows = ref([]);
 const usageEmail = ref('');
 const tplOpen = ref(false);
 const genOpen = ref(false);
@@ -150,7 +157,7 @@ async function load() {
     templates.value = extractRows(await fetchGiftTemplates());
     codes.value = extractRows(await fetchGiftCodes(listBody()));
     await loadUsages();
-    statsText.value = JSON.stringify(extractData(await fetchGiftStatistics()), null, 2);
+    statRows.value = readableRows(extractData(await fetchGiftStatistics()));
   } catch (e) {
     error.value = adminErrorMessage(e, t('admin.failed'));
   } finally {

@@ -23,14 +23,17 @@
         <div class="form-group"><label class="form-label">排序</label><input v-model="form.sort" class="form-control" /></div>
         <div class="form-group"><label class="form-label">UUID</label><input v-model="form.uuid" class="form-control" /></div>
       </div>
-      <div v-for="field in formFields" :key="field.name" class="form-group">
-        <label class="form-label">{{ field.label }}</label>
-        <input v-model="form.config[field.name]" class="form-control" />
+      <div v-if="formFields.length">
+        <div v-for="field in formFields" :key="field.name" class="form-group">
+          <label class="form-label">{{ field.label }}</label>
+          <label v-if="field.kind === 'bool'" class="check-line"><input v-model="form.config[field.name]" type="checkbox" /></label>
+          <select v-else-if="field.options.length" v-model="form.config[field.name]" class="form-control">
+            <option v-for="option in field.options" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+          <input v-else v-model="form.config[field.name]" class="form-control" />
+        </div>
       </div>
-      <div v-if="!formFields.length" class="form-group">
-        <label class="form-label">config JSON</label>
-        <textarea v-model="configText" class="form-control" rows="6"></textarea>
-      </div>
+      <RecordFields v-else-if="configDraft" :draft="configDraft" extendable />
       <label class="check-line"><input v-model="form.enable" type="checkbox" /> {{ t('admin.enable') }}</label>
       <template #footer>
         <button class="dialog-btn dialog-btn-cancel" type="button" @click="open = false">{{ t('admin.cancel') }}</button>
@@ -53,10 +56,12 @@ import { useI18n } from 'vue-i18n';
 import AdminFrame from '@/components/admin/AdminFrame.vue';
 import AdminTable from '@/components/admin/AdminTable.vue';
 import AdminDialog from '@/components/admin/AdminDialog.vue';
+import RecordFields from '@/components/admin/RecordFields.vue';
 import { useToast } from '@/composables/useToast';
 import { adminErrorMessage, extractData, extractRows } from '@/api/admin/http';
 import { dropAdminPayment, fetchAdminPayments, fetchPaymentForm, fetchPaymentMethods, saveAdminPayment, showAdminPayment, sortAdminPayments } from '@/api/admin/payment';
 import { flagOn } from '@/utils/adminFormat';
+import { fromDraft, toDraft } from '@/utils/recordFields';
 
 const { t } = useI18n();
 const { showToast } = useToast();
@@ -67,7 +72,7 @@ const methods = ref([]);
 const open = ref(false);
 const pending = ref(null);
 const formFields = ref([]);
-const configText = ref('{}');
+const configDraft = ref(null);
 const form = reactive({ id: null, name: '', payment: '', sort: '0', uuid: '', enable: true, config: {} });
 const columns = [
   { key: 'id', label: 'ID' },
@@ -94,14 +99,22 @@ function normalizeFields(formData) {
   if (Array.isArray(formData)) {
     return formData.map((item, index) => ({
       name: item.name || item.field || item.key || `field_${index}`,
-      label: item.label || item.name || item.field || `字段 ${index + 1}`
+      label: item.label || item.name || item.field || `字段 ${index + 1}`,
+      kind: String(item.type || '').toLowerCase().includes('bool') ? 'bool' : 'text',
+      options: Array.isArray(item.options) ? item.options.map((option) => (
+        option && typeof option === 'object'
+          ? { value: String(option.value ?? option.id ?? ''), label: String(option.label || option.name || option.value || '') }
+          : { value: String(option), label: String(option) }
+      )) : []
     }));
   }
   if (typeof formData === 'object') {
     return Object.keys(formData).map((key) => {
       const item = formData[key];
-      if (item && typeof item === 'object') return { name: item.name || key, label: item.label || key };
-      return { name: key, label: key };
+      if (item && typeof item === 'object') {
+        return { name: item.name || key, label: item.label || key, kind: 'text', options: [] };
+      }
+      return { name: key, label: key, kind: 'text', options: [] };
     });
   }
   return [];
@@ -129,7 +142,7 @@ async function loadForm() {
 
 function openCreate() {
   Object.assign(form, { id: null, name: '', payment: methods.value[0] ? methods.value[0].value : '', sort: '0', uuid: '', enable: true, config: {} });
-  configText.value = '{}';
+  configDraft.value = toDraft({});
   formFields.value = [];
   open.value = true;
   if (form.payment) loadForm();
@@ -140,17 +153,13 @@ function openEdit(row) {
     id: row.id, name: row.name || '', payment: row.payment || '', sort: String(row.sort ?? 0),
     uuid: row.uuid || '', enable: flagOn(row.enable), config: { ...(row.config || {}) }
   });
-  configText.value = JSON.stringify(row.config || {}, null, 2);
+  configDraft.value = toDraft(row.config || {});
   open.value = true;
   loadForm();
 }
 
 async function submit() {
-  let config = form.config;
-  if (!formFields.value.length) {
-    try { config = JSON.parse(configText.value || '{}'); }
-    catch (e) { fail(new Error('config 不是合法 JSON')); return; }
-  }
+  const config = formFields.value.length ? form.config : fromDraft(configDraft.value);
   const body = {
     name: form.name.trim(), payment: form.payment, config, enable: form.enable ? 1 : 0, sort: Number(form.sort) || 0
   };

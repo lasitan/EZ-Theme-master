@@ -18,7 +18,7 @@
       </template>
     </AdminTable>
     <AdminDialog :show="configOpen" :title="t('admin.plugins.config')" wide @close="configOpen = false">
-      <textarea v-model="configText" class="form-control" rows="12"></textarea>
+      <RecordFields v-if="configDraft" :draft="configDraft" extendable />
       <label class="check-line"><input v-model="removeFiles" type="checkbox" /> 删除时移除文件</label>
       <template #footer>
         <button class="dialog-btn dialog-btn-cancel" type="button" @click="configOpen = false">{{ t('admin.cancel') }}</button>
@@ -41,9 +41,11 @@ import { useI18n } from 'vue-i18n';
 import AdminFrame from '@/components/admin/AdminFrame.vue';
 import AdminTable from '@/components/admin/AdminTable.vue';
 import AdminDialog from '@/components/admin/AdminDialog.vue';
+import RecordFields from '@/components/admin/RecordFields.vue';
 import { useToast } from '@/composables/useToast';
 import { adminErrorMessage, extractData, extractRows } from '@/api/admin/http';
 import { deletePlugin, disablePlugin, discoverPlugins, enablePlugin, fetchPluginConfig, fetchPlugins, reloadPlugins, savePluginConfig, scanPlugins, uploadPluginFolder } from '@/api/admin/plugin';
+import { fromDraft, toDraft } from '@/utils/recordFields';
 
 const { t } = useI18n();
 const { showToast } = useToast();
@@ -52,7 +54,7 @@ const error = ref('');
 const rows = ref([]);
 const discoveredText = ref('');
 const configOpen = ref(false);
-const configText = ref('{}');
+const configDraft = ref(null);
 const active = ref(null);
 const removeFiles = ref(false);
 const pending = ref(null);
@@ -116,13 +118,13 @@ async function openConfig(row) {
   try {
     const data = extractData(await fetchPluginConfig(row.id ? { id: row.id } : { code: row.code })) || {};
     const plugin = data.plugin || data;
-    configText.value = JSON.stringify(plugin.config || row.config || {}, null, 2);
+    configDraft.value = toDraft(plugin.config || row.config || {});
     configOpen.value = true;
   } catch (e) { fail(e); }
 }
 async function saveConfig() {
   try {
-    const config = JSON.parse(configText.value || '{}');
+    const config = fromDraft(configDraft.value);
     await savePluginConfig({ id: active.value.id, code: active.value.code, config });
     configOpen.value = false;
     showToast(t('admin.saved'), 'success');

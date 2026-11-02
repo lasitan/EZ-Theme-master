@@ -6,15 +6,8 @@
       </button>
     </div>
     <div class="dashboard-card">
-      <div v-for="field in fields" :key="field.key" class="form-group">
-        <label class="form-label">{{ field.key }}</label>
-        <textarea v-if="field.kind === 'json'" v-model="field.value" class="form-control" rows="4"></textarea>
-        <label v-else-if="field.kind === 'bool'" class="check-line">
-          <input v-model="field.value" type="checkbox" />
-          {{ field.value ? '1' : '0' }}
-        </label>
-        <input v-else v-model="field.value" class="form-control" />
-      </div>
+      <p v-if="current === 'subscribe_template'" class="muted">订阅模板，按 YML 填写。</p>
+      <RecordFields v-if="draft" :draft="draft" />
       <button class="btn btn-primary" type="button" @click="save">{{ t('admin.save') }}</button>
     </div>
     <div v-if="current === 'mail'" class="dashboard-card">
@@ -29,16 +22,18 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AdminFrame from '@/components/admin/AdminFrame.vue';
+import RecordFields from '@/components/admin/RecordFields.vue';
 import { useToast } from '@/composables/useToast';
 import { adminErrorMessage, extractData } from '@/api/admin/http';
 import { CONFIG_MODULES, fetchConfigModule, saveConfigModule, testSendMail } from '@/api/admin/config';
+import { fromDraft, toDraft } from '@/utils/recordFields';
 
 const { t } = useI18n();
 const { showToast } = useToast();
 const loading = ref(true);
 const error = ref('');
 const current = ref('site');
-const fields = ref([]);
+const draft = ref(null);
 const testEmail = ref('');
 
 function moduleOf(id) {
@@ -53,42 +48,14 @@ function unwrap(payload, dataKey) {
   return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
 }
 
-function toFields(record) {
-  return Object.keys(record).map((key) => {
-    const value = record[key];
-    if (typeof value === 'boolean') {
-      return { key, kind: 'bool', value };
-    }
-    if (value && typeof value === 'object') {
-      return { key, kind: 'json', value: JSON.stringify(value, null, 2) };
-    }
-    return { key, kind: 'text', value: value == null ? '' : String(value) };
-  });
-}
-
-function toPayload() {
-  const body = {};
-  fields.value.forEach((field) => {
-    if (field.kind === 'bool') body[field.key] = field.value ? 1 : 0;
-    else if (field.kind === 'json') {
-      try { body[field.key] = field.value.trim() ? JSON.parse(field.value) : {}; }
-      catch (e) { throw new Error(`${field.key} 不是合法 JSON`); }
-    } else if (field.value !== '' && !Number.isNaN(Number(field.value)) && /^-?\d+(\.\d+)?$/.test(String(field.value).trim())) {
-      body[field.key] = Number(field.value);
-    } else {
-      body[field.key] = field.value;
-    }
-  });
-  return body;
-}
-
 async function load() {
   loading.value = true;
   error.value = '';
   try {
     const meta = moduleOf(current.value);
     const res = await fetchConfigModule(meta.fetchKey);
-    fields.value = toFields(unwrap(res, meta.dataKey));
+    const record = unwrap(res, meta.dataKey);
+    draft.value = toDraft(record, '', { yml: meta.id === 'subscribe_template' });
   } catch (e) {
     error.value = adminErrorMessage(e, t('admin.failed'));
   } finally {
@@ -104,7 +71,7 @@ async function switchModule(id) {
 async function save() {
   try {
     const meta = moduleOf(current.value);
-    await saveConfigModule(meta.write, toPayload());
+    await saveConfigModule(meta.write, fromDraft(draft.value));
     showToast(t('admin.saved'), 'success');
     await load();
   } catch (e) {

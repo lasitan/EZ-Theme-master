@@ -7,6 +7,7 @@ export const CONFIG_MODULES = [
   { id: 'subscribe', fetchKey: 'subscribe', write: XB.admin.config.subscribe, dataKey: 'subscribe' },
   { id: 'invite', fetchKey: 'invite', write: XB.admin.config.invite, dataKey: 'invite' },
   { id: 'server', fetchKey: 'server', write: XB.admin.config.server, dataKey: 'server' },
+  { id: 'agent', fetchKey: 'agent', write: XB.admin.config.agent, dataKey: 'agent' },
   { id: 'mail', fetchKey: 'mail', write: XB.admin.config.mail, dataKey: 'mail' },
   { id: 'subscribe_template', fetchKey: 'subscribe_template', write: XB.admin.config.subscribeTemplate, dataKey: 'subscribe_template' }
 ];

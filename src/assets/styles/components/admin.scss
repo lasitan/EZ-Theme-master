@@ -377,3 +377,88 @@
   margin-bottom: 12px;
 }
 
+.admin-container .form-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-container .info-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: var(--secondary-text-color);
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1;
+  cursor: help;
+  flex: 0 0 auto;
+}
+
+.admin-container .info-tip-pop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  left: calc(100% + 8px);
+  z-index: 30;
+  width: max-content;
+  max-width: 220px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-background);
+  box-shadow: 0 8px 24px var(--shadow-color);
+  color: var(--text-color);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%);
+  transition: opacity 0.2s ease;
+}
+
+.admin-container .info-tip:hover .info-tip-pop,
+.admin-container .info-tip:focus .info-tip-pop {
+  opacity: 1;
+  visibility: visible;
+}
+
+.admin-container .record-nest {
+  margin-top: 4px;
+}
+
+.admin-container .record-card {
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.admin-container .record-card-title {
+  margin-bottom: 8px;
+  color: var(--secondary-text-color);
+  font-size: 13px;
+}
+
+.admin-container .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-container .section-label {
+  margin: 8px 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
